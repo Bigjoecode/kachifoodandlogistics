@@ -1,0 +1,87 @@
+name: Deploy to production
+
+# Pushing to main deploys. The manual trigger is there for redeploys and rollbacks.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # Never let two deploys write to the server at the same time.
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install build dependencies
+        run: npm ci
+
+      - name: Build the stylesheet
+        # Rebuilt here rather than trusting the committed copy, so a template
+        # change can never ship with stale CSS.
+        run: npm run css
+
+      - name: Fail if the build produced nothing
+        run: test -s assets/css/tailwind.css
+
+      - name: Lint every PHP file
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq php8.2-cli
+          find . -path ./node_modules -prune -o -name '*.php' -print \
+            | xargs -n1 php -l > /dev/null
+
+      - name: Load the deploy key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Trust the host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync files to the server
+        # --delete keeps the server identical to the repo, with one exception:
+        # anything in the exclude list is server-owned and must survive a deploy.
+        run: |
+          rsync -az --delete \
+            -e "ssh -p ${{ secrets.SSH_PORT || 22 }}" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='tools/' \
+            --exclude='docs/' \
+            --exclude='README.md' \
+            --exclude='BUILD.md' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='assets/css/tailwind.src.css' \
+            --exclude='config/config.local.php' \
+            --exclude='assets/uploads/' \
+            --exclude='install.php' \
+            ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Verify the site responds
+        run: |
+          url="${{ secrets.HEALTHCHECK_URL || 'https://kachifoodandlogistics.com/' }}"
+          for attempt in 1 2 3; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)
+            echo "attempt $attempt: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 5
+          done
+          echo "Site did not return 200 after the deploy."
+          exit 1
