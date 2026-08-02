@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // --- Accounts -------------------------------------------------------
         $accounts = [
-            ['KACHI Admin',   'admin@kachifoodandlogistics.com', '+2348031234567', 'admin123', 'admin',    'Kachi Foodstuff Supplies and Logistics Ltd'],
+            ['KACHI Admin',   'admin@kachifoodandlogistics.com', '09060884920', 'admin123', 'admin',    'Kachi Foodstuff Supplies and Logistics Ltd'],
             ['Dispatch Desk', 'ops@kachifoodandlogistics.com',   '+2348031234568', 'ops12345', 'staff',    'Kachi Foodstuff Supplies and Logistics Ltd'],
             ['Amaka Obi',     'amaka@bellabites.ng',             '+2348090001111', 'demo1234', 'customer', 'Bella Bites Kitchen'],
         ];

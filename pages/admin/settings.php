@@ -3,6 +3,7 @@ $fields = [
     'site_name'          => ['Site name', 'text'],
     'contact_email'      => ['Contact email', 'email'],
     'contact_phone'      => ['Contact phone', 'text'],
+    'contact_phone_alt'  => ['Second contact phone', 'text'],
     'whatsapp'           => ['WhatsApp number (digits only, with country code)', 'text'],
     'address'            => ['Head office address', 'text'],
     'opening_hours'      => ['Opening hours', 'text'],
@@ -50,7 +51,7 @@ partial('admin_header', [
     <div>
         <div class="card card-pad mb-3">
             <h3>Business details</h3>
-            <?php foreach (['site_name', 'contact_email', 'contact_phone', 'whatsapp', 'address', 'opening_hours'] as $key): ?>
+            <?php foreach (['site_name', 'contact_email', 'contact_phone', 'contact_phone_alt', 'whatsapp', 'address', 'opening_hours'] as $key): ?>
                 <?php [$label, $type] = $fields[$key]; ?>
                 <div class="field">
                     <label for="<?= $key ?>"><?= e($label) ?></label>

@@ -24,6 +24,8 @@ if (is_post()) {
 }
 
 $bad      = fn(string $field) => isset($errors[$field]) ? ' input-error' : '';
+$phone    = Setting::get('contact_phone', APP_PHONE);
+$phoneAlt = Setting::get('contact_phone_alt', APP_PHONE_ALT);
 $whatsapp = Setting::get('whatsapp');
 
 partial('header', [
@@ -57,17 +59,21 @@ partial('header', [
 <section class="section-sm">
     <div class="shell">
         <div class="grid gap-4 sm:grid-cols-3">
-            <a href="tel:<?= e(preg_replace('/[^0-9+]/', '', Setting::get('contact_phone', APP_PHONE))) ?>"
-               class="card card-hover flex items-start gap-4 p-6">
+            <div class="card flex items-start gap-4 p-6">
                 <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-600">
                     <?= icon('phone-call', 'size-5') ?>
                 </span>
                 <span>
                     <span class="block text-xs font-bold uppercase tracking-wider text-ink-400">Call us</span>
-                    <span class="mt-1 block font-display font-bold text-navy-700"><?= e(Setting::get('contact_phone', APP_PHONE)) ?></span>
+                    <a class="mt-1 block font-display font-bold text-navy-700 transition-colors hover:text-orange-600"
+                       href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone)) ?>"><?= e($phone) ?></a>
+                    <?php if ($phoneAlt): ?>
+                        <a class="mt-1 block font-display font-bold text-navy-700 transition-colors hover:text-orange-600"
+                           href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phoneAlt)) ?>"><?= e($phoneAlt) ?></a>
+                    <?php endif; ?>
                     <span class="mt-0.5 block text-xs text-ink-400"><?= e(Setting::get('opening_hours', 'Mon - Sat')) ?></span>
                 </span>
-            </a>
+            </div>
 
             <a href="mailto:<?= e(Setting::get('contact_email', APP_EMAIL)) ?>"
                class="card card-hover flex items-start gap-4 p-6">
@@ -88,7 +94,7 @@ partial('header', [
                     </span>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-ink-400">WhatsApp</span>
-                        <span class="mt-1 block font-display font-bold text-navy-700">Chat with sales</span>
+                        <span class="mt-1 block font-display font-bold text-navy-700"><?= e($phoneAlt ?: 'Chat with sales') ?></span>
                         <span class="mt-0.5 block text-xs text-ink-400">Fastest for quick questions</span>
                     </span>
                 </a>

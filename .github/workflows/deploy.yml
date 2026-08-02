@@ -74,6 +74,12 @@ jobs:
             --exclude='install.php' \
             ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
+      - name: Apply database migrations
+        run: |
+          ssh -p "${{ secrets.SSH_PORT || 22 }}" \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "cd '${{ secrets.DEPLOY_PATH }}' && php database/migrate.php"
+
       - name: Verify the site responds
         run: |
           url="${{ secrets.HEALTHCHECK_URL || 'https://kachifoodandlogistics.com/' }}"

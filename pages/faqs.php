@@ -6,7 +6,7 @@
 $groups = [
     'Ordering foodstuff' => [
         ['Where can I buy foodstuff in bulk in Asaba?',
-         'KACHI supplies wholesale and retail foodstuff from our warehouse on Nnebisi Road, Asaba. You can order online from the catalogue, send a bulk list through the quote form, or message us on WhatsApp and we will price it for you.'],
+         'KACHI supplies wholesale and retail foodstuff from our base at Odakpo Close, Doctor Street, off Specialist Hospital, Asaba. You can order online from the catalogue, send a bulk list through the quote form, or message us on WhatsApp and we will price it for you.'],
         ['What is the difference between your retail and wholesale prices?',
          'Every product carries both. The retail price applies to small quantities, and the wholesale price kicks in automatically once your line quantity reaches the threshold shown on the product page. You do not need to ask or negotiate for it.'],
         ['Is there a minimum order?',

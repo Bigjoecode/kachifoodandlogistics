@@ -258,9 +258,10 @@ INSERT INTO products (category_id, name, slug, sku, summary, description, origin
 INSERT INTO settings (setting_key, setting_value) VALUES
 ('site_name',         'KACHI Foodstuff Supplies & Logistics'),
 ('contact_email',     'orders@kachifoodandlogistics.com'),
-('contact_phone',     '+234 803 123 4567'),
-('whatsapp',          '2348031234567'),
-('address',           '25 Nnebisi Road, Asaba, Delta State, Nigeria'),
+('contact_phone',     '0906 088 4920'),
+('contact_phone_alt', '0806 142 8556'),
+('whatsapp',          '2348061428556'),
+('address',           'Odakpo Close, Doctor Street, off Specialist Hospital, Asaba'),
 ('service_areas',     'Asaba, Warri, Sapele, Ughelli, Abraka, Agbor, Oghara, Effurun'),
 ('delivery_fee',      '3500'),
 ('free_delivery_from','150000'),

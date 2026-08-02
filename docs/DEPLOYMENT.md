@@ -102,7 +102,8 @@ Watch it under the repository's **Actions** tab. The job:
 2. fails the build if the stylesheet came out empty
 3. runs `php -l` over every PHP file
 4. rsyncs to the server
-5. requests the homepage and fails if it does not return `200`
+5. applies each file in `database/migrations/` exactly once
+6. requests the homepage and fails if it does not return `200`
 
 `workflow_dispatch` lets you redeploy from the Actions tab without a new commit.
 

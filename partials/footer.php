@@ -57,10 +57,15 @@
                     </li>
                     <li class="flex items-start gap-3">
                         <?= icon('phone-call', 'size-4 shrink-0 mt-0.5 text-orange-400') ?>
-                        <a class="flex min-h-11 items-center font-semibold text-white transition-colors hover:text-orange-400"
-                           href="tel:<?= e(preg_replace('/[^0-9+]/', '', Setting::get('contact_phone', APP_PHONE))) ?>">
-                            <?= e(Setting::get('contact_phone', APP_PHONE)) ?>
-                        </a>
+                        <span class="flex min-h-11 flex-col justify-center gap-1">
+                            <?php $footerPhone = Setting::get('contact_phone', APP_PHONE); ?>
+                            <a class="font-semibold text-white transition-colors hover:text-orange-400"
+                               href="tel:<?= e(preg_replace('/[^0-9+]/', '', $footerPhone)) ?>"><?= e($footerPhone) ?></a>
+                            <?php if ($footerPhoneAlt = Setting::get('contact_phone_alt', APP_PHONE_ALT)): ?>
+                                <a class="font-semibold text-white transition-colors hover:text-orange-400"
+                                   href="tel:<?= e(preg_replace('/[^0-9+]/', '', $footerPhoneAlt)) ?>"><?= e($footerPhoneAlt) ?></a>
+                            <?php endif; ?>
+                        </span>
                     </li>
                     <li class="flex items-start gap-3">
                         <?= icon('mail', 'size-4 shrink-0 mt-0.5 text-orange-400') ?>
