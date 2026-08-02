@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: npm
@@ -37,9 +37,14 @@ jobs:
       - name: Fail if the build produced nothing
         run: test -s assets/css/tailwind.css
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
       - name: Lint every PHP file
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq php8.2-cli
           find . -path ./node_modules -prune -o -name '*.php' -print \
             | xargs -n1 php -l > /dev/null
 
