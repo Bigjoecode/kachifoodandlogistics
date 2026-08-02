@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Nothing here is useful to a crawler and some of it is private.
+Disallow: /admin
+Disallow: /account
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order/
+Disallow: /logistics/KFL-
+Disallow: /install.php
+
+Sitemap: https://kachifoodandlogistics.com/sitemap.xml

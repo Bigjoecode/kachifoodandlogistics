@@ -1,0 +1,44 @@
+# --- Secrets -----------------------------------------------------------------
+# Per-server credentials. Never committed; see config.local.example.php.
+/config/config.local.php
+
+# The product brief contains a plaintext mailbox password, so it stays out of
+# the repository. Redact the credentials block before committing any version.
+/READ.md
+
+# Deploy keypair. The private half goes into the GitHub secret, not the repo.
+/keys/
+
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.env
+.env.*
+
+# --- Dependencies and build tooling -----------------------------------------
+/node_modules/
+/vendor/
+package-lock.json.bak
+
+# --- Generated locally, not deployed ----------------------------------------
+/tools/shots/
+
+# --- Runtime ------------------------------------------------------------------
+# Customer-uploaded product images live on the server, not in git.
+/assets/uploads/*
+!/assets/uploads/.gitkeep
+
+*.log
+/logs/
+
+# --- Editors and OS -----------------------------------------------------------
+.vscode/
+.idea/
+.kilocode/
+.qodo/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~

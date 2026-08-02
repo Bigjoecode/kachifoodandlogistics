@@ -1,0 +1,20 @@
+{
+  "name": "kachifoodandlogistics",
+  "version": "1.0.0",
+  "scripts": {
+    "css": "tailwindcss -i assets/css/tailwind.src.css -o assets/css/tailwind.css --minify",
+    "css:watch": "tailwindcss -i assets/css/tailwind.src.css -o assets/css/tailwind.css --watch",
+    "images": "node tools/build-images.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "puppeteer-core": "^25.4.0",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "private": true
+}

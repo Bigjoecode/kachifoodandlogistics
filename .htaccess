@@ -1,0 +1,27 @@
+# Kachi Food & Logistics — front controller
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve real files and directories directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes through index.php
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Deny access to application internals
+<FilesMatch "\.(sql|md|log)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
