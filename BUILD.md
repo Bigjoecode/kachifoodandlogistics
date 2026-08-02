@@ -81,6 +81,31 @@ icons anywhere.
 Products without an uploaded photo fall back to a branded category tile rather than a broken frame,
 so the catalogue never looks half-finished.
 
+### Responsive behaviour
+
+[tools/responsive-audit.js](tools/responsive-audit.js) drives every route in a real browser at
+**320 / 390 / 768 / 1024px** and fails on horizontal page overflow, elements wider than the
+viewport, undersized touch targets and sub-12px text.
+
+Thresholds follow the actual standards rather than one blanket number:
+
+- **44px** for controls — buttons, inputs, selects (Apple HIG).
+- **24px** for standalone links (WCAG 2.2 AA, 2.5.8 Target Size Minimum).
+- Links inside a sentence are exempt, which is the WCAG *Inline* exception. The audit detects
+  that structurally by comparing the link text against its parent's text, instead of
+  maintaining a hand-written list of container classes.
+
+Current state across all 24 routes (storefront **and** back office):
+
+```
+No responsive issues across 24 routes x 320/390/768/1024px.
+```
+
+Getting there needed real fixes, not just calibration: footer and utility-bar links given
+proper hit areas, breadcrumbs lifted to 24px, sub-12px labels raised to the 12px floor, and a
+`max-width: 768px` block in `app.css` that lifts every back-office control to 44px while
+desktop keeps its denser sizing.
+
 ### Accessibility and performance
 
 - Every interactive control is at least 44px tall (`min-h-11` on `.btn`, `.input`, `.qty`).
@@ -90,6 +115,24 @@ so the catalogue never looks half-finished.
 - Images carry explicit `width`/`height` to avoid layout shift; below-fold images are lazy-loaded.
 - Prices and totals use tabular figures so they do not jitter.
 - Headings use `text-wrap: balance`; body copy is capped for line length.
+
+---
+
+## Deployment
+
+Pushing to `main` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
+build the stylesheet, fail if it came out empty, `php -l` every file, rsync over SSH, then
+health-check the homepage and fail the job on anything but a 200.
+
+`rsync --delete` keeps the server matching the repo, except for server-owned paths that must
+survive a deploy: `config/config.local.php`, `assets/uploads/`, and `install.php`.
+
+Credentials never enter the repository. `config/config.php` guards every environment constant
+with `defined()`, so a git-ignored `config/config.local.php` on each machine takes precedence.
+[config/config.local.example.php](config/config.local.example.php) is the template.
+
+Full setup — SSH key authorisation in cPanel, the required repository secrets, first deploy and
+rollback — is in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ---
 
