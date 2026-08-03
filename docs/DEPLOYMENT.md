@@ -1,10 +1,11 @@
 # Deployment
 
-Pushing to `main` builds the CSS, lints every PHP file, and rsyncs the result to the live
-server over SSH. The workflow is [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml).
+Pushing to `main` builds the CSS, lints every PHP file, and syncs the result to the live
+server over explicit FTPS. The workflow is [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml).
 
-Nothing deploys until the one-time setup below is done, because the workflow needs the
-repository secrets to exist.
+The dedicated FTP account is restricted to `public_html`, and its password is stored in
+the `FTP_DEPLOY` repository secret. Database migrations run idempotently before the first
+web request is handled because shared hosting does not provide shell access.
 
 ---
 

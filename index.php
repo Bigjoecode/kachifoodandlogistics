@@ -14,6 +14,11 @@ spl_autoload_register(static function (string $class): void {
     }
 });
 
+// FTP-only hosting cannot run post-deploy shell commands. Migrations are
+// idempotent and are applied before the first request reaches a page handler.
+require ROOT_PATH . '/database/migrate.php';
+apply_database_migrations();
+
 session_set_cookie_params([
     'httponly' => true,
     'samesite' => 'Lax',

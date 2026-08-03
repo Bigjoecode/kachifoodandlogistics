@@ -48,42 +48,31 @@ jobs:
           find . -path ./node_modules -prune -o -name '*.php' -print \
             | xargs -n1 php -l > /dev/null
 
-      - name: Load the deploy key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Deploy over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Trust the host key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p "${{ secrets.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
-
-      - name: Sync files to the server
-        # --delete keeps the server identical to the repo, with one exception:
-        # anything in the exclude list is server-owned and must survive a deploy.
-        run: |
-          rsync -az --delete \
-            -e "ssh -p ${{ secrets.SSH_PORT || 22 }}" \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='node_modules/' \
-            --exclude='tools/' \
-            --exclude='docs/' \
-            --exclude='README.md' \
-            --exclude='BUILD.md' \
-            --exclude='package.json' \
-            --exclude='package-lock.json' \
-            --exclude='assets/css/tailwind.src.css' \
-            --exclude='config/config.local.php' \
-            --exclude='assets/uploads/' \
-            --exclude='install.php' \
-            ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
-
-      - name: Apply database migrations
-        run: |
-          ssh -p "${{ secrets.SSH_PORT || 22 }}" \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "cd '${{ secrets.DEPLOY_PATH }}' && php database/migrate.php"
+          server: kachifoodandlogistics.com
+          username: github-deploy@kachifoodandlogistics.com
+          password: ${{ secrets.FTP_DEPLOY }}
+          protocol: ftps
+          port: 21
+          server-dir: /
+          security: strict
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/tools/**
+            **/docs/**
+            README.md
+            BUILD.md
+            package.json
+            package-lock.json
+            assets/css/tailwind.src.css
+            config/config.local.php
+            assets/uploads/**
+            install.php
 
       - name: Verify the site responds
         run: |
