@@ -48,16 +48,30 @@ jobs:
           find . -path ./node_modules -prune -o -name '*.php' -print \
             | xargs -n1 php -l > /dev/null
 
+      - name: Verify the FTPS certificate
+        shell: bash
+        run: |
+          expected="77955ACE09C3ADAA4F8B3DFE1CE42035D5BD8620103758CD5C8C8BB40CBB08A1"
+          actual=$(openssl s_client \
+            -connect ftp.kachifoodandlogistics.com:21 \
+            -servername ftp.kachifoodandlogistics.com \
+            -starttls ftp </dev/null 2>/dev/null \
+            | openssl x509 -noout -fingerprint -sha256 \
+            | cut -d= -f2 | tr -d ':')
+          test "$actual" = "$expected"
+
       - name: Deploy over FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          server: lim112.truehost.cloud
+          server: ftp.kachifoodandlogistics.com
           username: github-deploy@kachifoodandlogistics.com
           password: ${{ secrets.FTP_DEPLOY }}
           protocol: ftps
           port: 21
           server-dir: /
-          security: strict
+          # cPanel advertises this hostname, but Truehost serves the canonical
+          # lim112 certificate. The preceding fingerprint pin verifies it.
+          security: loose
           exclude: |
             **/.git*
             **/.git*/**
