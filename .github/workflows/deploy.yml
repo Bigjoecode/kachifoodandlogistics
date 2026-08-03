@@ -51,7 +51,7 @@ jobs:
       - name: Deploy over FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
-          server: ftp.kachifoodandlogistics.com
+          server: lim112.truehost.cloud
           username: github-deploy@kachifoodandlogistics.com
           password: ${{ secrets.FTP_DEPLOY }}
           protocol: ftps
