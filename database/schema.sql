@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS schema_migrations;
 
 SET FOREIGN_KEY_CHECKS = 1;
 

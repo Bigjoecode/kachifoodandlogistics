@@ -1,9 +1,98 @@
 <?php
 /** Apply each production SQL migration exactly once. */
 
+/** Split SQL while preserving semicolons inside quoted strings. */
+function migration_sql_statements(string $sql): array
+{
+    $statements = [];
+    $current    = '';
+    $inString   = false;
+    $quote      = '';
+    $length     = strlen($sql);
+
+    for ($index = 0; $index < $length; $index++) {
+        $character = $sql[$index];
+
+        if ($inString) {
+            $current .= $character;
+            if ($character === '\\' && $index + 1 < $length) {
+                $current .= $sql[++$index];
+            } elseif ($character === $quote) {
+                $inString = false;
+            }
+            continue;
+        }
+
+        if ($character === "'" || $character === '"') {
+            $inString = true;
+            $quote    = $character;
+            $current .= $character;
+            continue;
+        }
+
+        if (($character === '-' && substr($sql, $index, 3) === '-- ') || $character === '#') {
+            while ($index < $length && $sql[$index] !== "\n") {
+                $index++;
+            }
+            $current .= "\n";
+            continue;
+        }
+
+        if ($character === ';') {
+            if (trim($current) !== '') {
+                $statements[] = trim($current);
+            }
+            $current = '';
+            continue;
+        }
+
+        $current .= $character;
+    }
+
+    if (trim($current) !== '') {
+        $statements[] = trim($current);
+    }
+
+    return $statements;
+}
+
+function migration_run_sql_file(PDO $pdo, string $path): void
+{
+    $sql = file_get_contents($path);
+    if ($sql === false) {
+        throw new RuntimeException("Cannot read {$path}");
+    }
+
+    foreach (migration_sql_statements($sql) as $statement) {
+        $pdo->exec($statement);
+    }
+}
+
+/** Initialize only a genuinely empty database; never overwrite live data. */
+function bootstrap_empty_database(PDO $pdo): void
+{
+    $tables = $pdo->query(
+        'SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()'
+    )->fetchAll(PDO::FETCH_COLUMN);
+    $applicationTables = array_values(array_diff($tables, ['schema_migrations']));
+
+    if (in_array('settings', $tables, true)) {
+        return;
+    }
+
+    if ($applicationTables !== []) {
+        throw new RuntimeException('Database schema is incomplete; automatic initialization was refused.');
+    }
+
+    migration_run_sql_file($pdo, __DIR__ . '/schema.sql');
+    migration_run_sql_file($pdo, __DIR__ . '/seed.sql');
+}
+
 function apply_database_migrations(): void
 {
     $pdo = Db::conn();
+    bootstrap_empty_database($pdo);
+
     try {
         $applied = $pdo->query('SELECT migration FROM schema_migrations')->fetchAll(PDO::FETCH_COLUMN);
     } catch (PDOException $error) {
