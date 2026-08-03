@@ -260,7 +260,7 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('contact_email',     'orders@kachifoodandlogistics.com'),
 ('contact_phone',     '0906 088 4920'),
 ('contact_phone_alt', '0806 142 8556'),
-('whatsapp',          '2348061428556'),
+('whatsapp',          '2349060884920'),
 ('address',           'Odakpo Close, Doctor Street, off Specialist Hospital, Asaba'),
 ('service_areas',     'Asaba, Warri, Sapele, Ughelli, Abraka, Agbor, Oghara, Effurun'),
 ('delivery_fee',      '3500'),
@@ -268,5 +268,5 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('bank_name',         'Zenith Bank'),
 ('bank_account_name', 'Kachi Foodstuff Supplies and Logistics Ltd'),
 ('bank_account_no',   '1012345678'),
-('cac_number',        'RC 1234567'),
+('cac_number',        'RC: 9651491'),
 ('opening_hours',     'Mon - Sat, 7:30am - 7:00pm | Sun, 10:00am - 4:00pm');

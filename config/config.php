@@ -13,6 +13,7 @@ define('APP_EMAIL', 'info@kachifoodandlogistics.com');
 define('APP_PHONE', '0906 088 4920');
 define('APP_PHONE_ALT', '0806 142 8556');
 define('APP_ADDRESS', 'Odakpo Close, Doctor Street, off Specialist Hospital, Asaba');
+define('APP_CAC_NUMBER', 'RC: 9651491');
 defined('APP_DOMAIN') || define('APP_DOMAIN', 'https://kachifoodandlogistics.com');
 define('APP_STATE', 'Delta State');
 define('APP_CITY', 'Asaba');

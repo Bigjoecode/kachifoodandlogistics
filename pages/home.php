@@ -348,7 +348,7 @@ partial('header', [
                 <div class="mt-8 rounded-2xl border border-ink-200 bg-ink-50 p-6">
                     <h3 class="text-base">Trust signals</h3>
                     <ul class="tick-list mt-4 text-sm">
-                        <li>Registered in Nigeria &mdash; <?= e(Setting::get('cac_number', 'RC 1234567')) ?></li>
+                        <li>Registered in Nigeria &mdash; <?= e(Setting::get('cac_number', APP_CAC_NUMBER)) ?></li>
                         <li>NAFDAC-registered water and packaged lines only</li>
                         <li>Aflatoxin screening on every groundnut and grain intake</li>
                         <li>Temperature logs available on request for any frozen delivery</li>

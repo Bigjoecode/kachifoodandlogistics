@@ -14,6 +14,11 @@ $localBusiness = [
     'url'         => APP_DOMAIN,
     'telephone'   => $phone,
     'email'       => Setting::get('contact_email', APP_EMAIL),
+    'identifier'  => [
+        '@type'      => 'PropertyValue',
+        'propertyID' => 'CAC Registration Number',
+        'value'      => Setting::get('cac_number', APP_CAC_NUMBER),
+    ],
     'address'     => [
         '@type'           => 'PostalAddress',
         'streetAddress'   => Setting::get('address', APP_ADDRESS),

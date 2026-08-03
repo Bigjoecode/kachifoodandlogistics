@@ -114,7 +114,7 @@
             <p>&copy; <?= date('Y') ?> <?= e(Setting::get('site_name', APP_NAME)) ?>. All rights reserved.</p>
             <p class="flex items-center gap-2">
                 <?= icon('shield', 'size-3.5 text-orange-400') ?>
-                <?= e(Setting::get('cac_number', 'RC 1234567')) ?> &middot; <?= e(APP_CITY) ?>, <?= e(APP_STATE) ?>
+                <?= e(Setting::get('cac_number', APP_CAC_NUMBER)) ?> &middot; <?= e(APP_CITY) ?>, <?= e(APP_STATE) ?>
             </p>
         </div>
     </div>

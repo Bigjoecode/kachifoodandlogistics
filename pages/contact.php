@@ -27,6 +27,8 @@ $bad      = fn(string $field) => isset($errors[$field]) ? ' input-error' : '';
 $phone    = Setting::get('contact_phone', APP_PHONE);
 $phoneAlt = Setting::get('contact_phone_alt', APP_PHONE_ALT);
 $whatsapp = Setting::get('whatsapp');
+$whatsappDisplay = preg_replace('/^234/', '0', (string) $whatsapp);
+$whatsappDisplay = preg_replace('/^(\d{4})(\d{3})(\d{4})$/', '$1 $2 $3', $whatsappDisplay);
 
 partial('header', [
     'title'       => page_title('Contact us'),
@@ -94,7 +96,7 @@ partial('header', [
                     </span>
                     <span>
                         <span class="block text-xs font-bold uppercase tracking-wider text-ink-400">WhatsApp</span>
-                        <span class="mt-1 block font-display font-bold text-navy-700"><?= e($phoneAlt ?: 'Chat with sales') ?></span>
+                        <span class="mt-1 block font-display font-bold text-navy-700"><?= e($whatsappDisplay ?: 'Chat with sales') ?></span>
                         <span class="mt-0.5 block text-xs text-ink-400">Fastest for quick questions</span>
                     </span>
                 </a>
@@ -188,7 +190,7 @@ partial('header', [
                         </div>
                         <div class="flex justify-between gap-4 py-3">
                             <dt class="text-ink-500">Registration</dt>
-                            <dd class="text-right font-semibold text-navy-700"><?= e(Setting::get('cac_number', 'RC 1234567')) ?></dd>
+                            <dd class="text-right font-semibold text-navy-700"><?= e(Setting::get('cac_number', APP_CAC_NUMBER)) ?></dd>
                         </div>
                     </dl>
                 </div>
