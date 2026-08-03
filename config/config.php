@@ -30,7 +30,9 @@ if (is_file(__DIR__ . '/config.local.php')) {
     require __DIR__ . '/config.local.php';
 }
 
-defined('APP_ENV')   || define('APP_ENV', 'local');        // 'local' | 'production'
+$serverName = strtolower((string) ($_SERVER['SERVER_NAME'] ?? ''));
+$localHost  = in_array($serverName, ['', 'localhost', '127.0.0.1', '::1'], true);
+defined('APP_ENV')   || define('APP_ENV', $localHost ? 'local' : 'production');
 defined('APP_DEBUG') || define('APP_DEBUG', APP_ENV === 'local');
 
 // --- Database -----------------------------------------------------------

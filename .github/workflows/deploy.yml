@@ -92,10 +92,14 @@ jobs:
         run: |
           url="${{ secrets.HEALTHCHECK_URL || 'https://kachifoodandlogistics.com/' }}"
           for attempt in 1 2 3; do
-            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)
+            body=$(mktemp)
+            code=$(curl -sS -o "$body" -w '%{http_code}' --max-time 20 "$url" || echo 000)
             echo "attempt $attempt: HTTP $code"
-            [ "$code" = "200" ] && exit 0
+            if [ "$code" = "200" ] \
+              && ! grep -Eqi 'Database connection failed|Service temporarily unavailable' "$body"; then
+              exit 0
+            fi
             sleep 5
           done
-          echo "Site did not return 200 after the deploy."
+          echo "Site did not return a healthy response after the deploy."
           exit 1
