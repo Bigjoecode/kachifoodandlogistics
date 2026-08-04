@@ -77,6 +77,8 @@ $nav = [
     </div>
 </div>
 
+<div data-nav-backdrop hidden class="fixed inset-0 z-30 bg-navy-950/45 backdrop-blur-[2px] lg:hidden"></div>
+
 <!-- Masthead -->
 <header class="sticky top-0 z-40 border-b border-ink-200 bg-white/90 backdrop-blur-lg">
     <div class="shell flex min-h-[4.5rem] items-center gap-4">
@@ -114,21 +116,24 @@ $nav = [
             <?php endif; ?>
 
             <button type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav"
-                    class="btn btn-ghost px-3 lg:hidden" aria-label="Open menu">
+                    class="btn btn-ghost gap-2 px-3 lg:hidden" aria-label="Open menu">
                 <span data-nav-icon="open"><?= icon('menu', 'size-5') ?></span>
                 <span data-nav-icon="close" class="hidden"><?= icon('close', 'size-5') ?></span>
+                <span data-nav-label class="text-sm font-bold">Menu</span>
             </button>
         </div>
     </div>
 
     <!-- Mobile navigation -->
     <nav id="mobile-nav" data-nav hidden
-         class="border-t border-ink-200 bg-white lg:hidden" aria-label="Mobile">
-        <div class="shell grid gap-1 py-4">
+         class="absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-ink-200 bg-white shadow-deep lg:hidden"
+         aria-label="Mobile">
+        <div class="shell grid gap-1 py-4 sm:py-5">
             <?php foreach ($nav as [$href, $label, $match]): ?>
                 <a href="<?= url($href) ?>"
                    class="flex min-h-11 items-center justify-between rounded-xl px-3 text-base font-semibold
-                          <?= nav_active($match) ? 'bg-navy-50 text-navy-700' : 'text-ink-700 hover:bg-ink-100' ?>">
+                          <?= nav_active($match) ? 'bg-navy-50 text-navy-700' : 'text-ink-700 hover:bg-ink-100' ?>"
+                   <?= nav_active($match) ? 'aria-current="page"' : '' ?>>
                     <?= $label ?><?= icon('chevron-right', 'size-4 text-ink-300') ?>
                 </a>
             <?php endforeach; ?>

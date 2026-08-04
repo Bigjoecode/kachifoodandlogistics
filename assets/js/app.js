@@ -6,26 +6,54 @@
     /* Mobile navigation ---------------------------------------------------- */
     var toggle = document.querySelector('[data-nav-toggle]');
     var nav = document.querySelector('[data-nav]');
+    var backdrop = document.querySelector('[data-nav-backdrop]');
 
     if (toggle && nav) {
         var openIcon = toggle.querySelector('[data-nav-icon="open"]');
         var closeIcon = toggle.querySelector('[data-nav-icon="close"]');
+        var label = toggle.querySelector('[data-nav-label]');
 
-        toggle.addEventListener('click', function () {
-            var open = nav.hasAttribute('hidden');
-            if (open) { nav.removeAttribute('hidden'); } else { nav.setAttribute('hidden', ''); }
+        function setMenu(open, returnFocus) {
+            nav.toggleAttribute('hidden', !open);
+            if (backdrop) backdrop.toggleAttribute('hidden', !open);
 
             toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
             toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             if (openIcon) openIcon.classList.toggle('hidden', open);
             if (closeIcon) closeIcon.classList.toggle('hidden', !open);
+            if (label) label.textContent = open ? 'Close' : 'Menu';
+            document.body.classList.toggle('overflow-hidden', open);
+
+            if (open) {
+                var firstLink = nav.querySelector('a');
+                if (firstLink) firstLink.focus({ preventScroll: true });
+            } else if (returnFocus) {
+                toggle.focus({ preventScroll: true });
+            }
+        }
+
+        toggle.addEventListener('click', function () {
+            setMenu(nav.hasAttribute('hidden'), false);
+        });
+
+        if (backdrop) {
+            backdrop.addEventListener('click', function () { setMenu(false, true); });
+        }
+
+        nav.addEventListener('click', function (event) {
+            if (event.target.closest('a')) setMenu(false, false);
         });
 
         // Close on Escape so keyboard users are never trapped.
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !nav.hasAttribute('hidden')) {
-                toggle.click();
-                toggle.focus();
+                setMenu(false, true);
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 1024 && !nav.hasAttribute('hidden')) {
+                setMenu(false, false);
             }
         });
     }
