@@ -106,6 +106,22 @@ proper hit areas, breadcrumbs lifted to 24px, sub-12px labels raised to the 12px
 `max-width: 768px` block in `app.css` that lifts every back-office control to 44px while
 desktop keeps its denser sizing.
 
+### Back office on mobile
+
+The sidebar is an off-canvas drawer below 1024px, opened from a sticky bar that
+carries the menu button and the current page title. It closes on Escape, on the scrim,
+on its own close button, and on following a nav link; focus moves into it on open and
+returns to the button on close; focus is trapped while it covers the page; page scroll
+is locked meanwhile. Desktop keeps the permanent sidebar and none of that code runs.
+
+Data tables stack into labelled cards below 768px. Labels are copied from each table's
+own `<th>` cells by `app.js`, so every admin table gets it with no per-page markup and
+the labels cannot drift from the headers.
+
+[tools/admin-drawer-test.js](tools/admin-drawer-test.js) drives all of this in a real
+browser — 19 checks covering open, close by four routes, ARIA state, scroll lock, focus,
+table stacking and desktop inertness.
+
 ### Accessibility and performance
 
 - Every interactive control is at least 44px tall (`min-h-11` on `.btn`, `.input`, `.qty`).

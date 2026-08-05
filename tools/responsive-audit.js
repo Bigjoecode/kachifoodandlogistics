@@ -134,8 +134,8 @@ function measure() {
   if (withAdmin) {
     await page.setViewport({ width: 1280, height: 900 });
     await page.goto(`${BASE}/admin/login`, { waitUntil: 'domcontentloaded' });
-    await page.type('#email', 'admin@kachifoodandlogistics.com');
-    await page.type('#password', 'admin123');
+    await page.type('#email', process.env.ADMIN_EMAIL || 'admin@kachifoodandlogistics.com');
+    await page.type('#password', process.env.ADMIN_PASSWORD || 'admin123');
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
       page.click('button[type="submit"]'),

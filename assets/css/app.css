@@ -648,6 +648,15 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
     font-size: .75rem; font-weight: 700; padding: .1rem .5rem;
 }
 .admin-side-foot { margin-top: auto; border-top: 1px solid rgba(255, 255, 255, .12); padding-top: 1rem; font-size: .85rem; }
+/* The default link colour is dark navy, which is unreadable on the navy
+   sidebar. Light text, and a real hit area for thumbs. */
+.admin-side-foot a,
+.admin-side-foot .btn-link {
+    display: inline-flex; align-items: center; min-height: 32px;
+    color: var(--brand-100);
+}
+.admin-side-foot a:hover,
+.admin-side-foot .btn-link:hover { color: var(--white); }
 
 .admin-main { display: flex; flex-direction: column; min-width: 0; }
 .admin-top {
@@ -785,10 +794,120 @@ a.tiny { display: inline-flex; align-items: center; min-height: 24px; }
     .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .split { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --- Back office on small screens ------------------------------------------
+   The sidebar becomes an off-canvas drawer with a scrim. Below 1024px a
+   sticky bar carries the menu button, so navigation is always one tap away
+   instead of a wall of links above every page.
+   -------------------------------------------------------------------------- */
+.admin-bar { display: none; }
+
+@media (max-width: 1023px) {
     .admin { grid-template-columns: 1fr; }
-    .admin-side { position: static; height: auto; }
-    .admin-nav { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-    .admin-nav .group-label { grid-column: 1 / -1; }
+
+    .admin-bar {
+        position: sticky; top: 0; z-index: 45;
+        display: flex; align-items: center; gap: .75rem;
+        padding: .6rem .9rem;
+        background: var(--brand-900); color: var(--white);
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+    .admin-bar .brand-mark { width: 34px; height: 34px; font-size: .85rem; }
+    .admin-bar .title { font-weight: 700; font-size: .98rem; letter-spacing: -.01em; }
+    .admin-bar .spacer { margin-left: auto; }
+
+    .admin-burger {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 44px; height: 44px; flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, .22); border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, .08); color: var(--white);
+        cursor: pointer; padding: 0;
+    }
+    .admin-burger:hover { background: rgba(255, 255, 255, .16); }
+    .admin-burger svg { width: 20px; height: 20px; }
+
+    .admin-side {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        width: min(286px, 84vw); height: 100dvh;
+        z-index: 60;
+        transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+        box-shadow: none;
+    }
+    .admin-side.is-open { transform: none; box-shadow: var(--shadow-lg); }
+
+    .admin-scrim {
+        position: fixed; inset: 0; z-index: 55;
+        background: rgba(3, 18, 42, .55);
+        opacity: 0; pointer-events: none;
+        transition: opacity .28s ease;
+    }
+    .admin-scrim.is-open { opacity: 1; pointer-events: auto; }
+
+    /* Stop the page behind the drawer scrolling while it is open. */
+    body.drawer-open { overflow: hidden; }
+
+    .admin-top { padding: 1rem 1.1rem; }
+    .admin-top h1 { font-size: 1.12rem; }
+}
+
+@media (min-width: 1024px) {
+    /* Desktop keeps the permanent sidebar; the drawer machinery is inert. */
+    .admin-scrim { display: none; }
+    .admin-drawer-close { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-side, .admin-scrim { transition: none; }
+}
+
+/* --- Admin tables on phones -------------------------------------------------
+   A seven-column table cannot be read on a 390px screen, and sideways
+   scrolling hides the columns that matter. Each row becomes a card instead,
+   labelled from the table's own headers by app.js.
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .admin-content .table-wrap { overflow-x: visible; }
+
+    .admin-content .table.table-stacked,
+    .admin-content .table.table-stacked tbody,
+    .admin-content .table.table-stacked tr,
+    .admin-content .table.table-stacked td { display: block; width: 100%; }
+
+    .admin-content .table.table-stacked thead { display: none; }
+
+    .admin-content .table.table-stacked tr {
+        margin-bottom: .75rem;
+        border: 1px solid var(--ink-200);
+        border-radius: var(--radius);
+        background: var(--white);
+        overflow: hidden;
+    }
+    .admin-content .table.table-stacked tr:last-child { margin-bottom: 0; }
+    .admin-content .table.table-stacked tr:hover { background: var(--white); }
+
+    .admin-content .table.table-stacked td {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1rem; padding: .7rem .9rem; text-align: right;
+        border-bottom: 1px solid var(--ink-100);
+    }
+    .admin-content .table.table-stacked td:last-child { border-bottom: 0; }
+
+    .admin-content .table.table-stacked td::before {
+        content: attr(data-label);
+        flex-shrink: 0; text-align: left;
+        font-size: .75rem; font-weight: 700; letter-spacing: .05em;
+        text-transform: uppercase; color: var(--ink-400);
+    }
+    /* Action cells have a blank header, so they get the full width. */
+    .admin-content .table.table-stacked td:not([data-label]) { justify-content: flex-end; }
+    .admin-content .table.table-stacked td.tight { width: 100%; }
+
+    .admin-content .table.table-stacked .cell-sub { display: block; }
+
+    .data-filters { padding: .9rem; }
+    .data-filters .field { flex: 1 1 100%; min-width: 0; }
 }
 
 @media (max-width: 900px) {

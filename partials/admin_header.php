@@ -18,18 +18,43 @@ $openBookings = (int) Db::value("SELECT COUNT(*) FROM logistics_bookings WHERE s
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2315633d'/><text x='16' y='22' font-family='Arial' font-size='16' font-weight='bold' fill='white' text-anchor='middle'>K</text></svg>">
+    <link rel="icon" type="image/png" href="<?= asset('img/favicon.png') ?>">
 </head>
 <body>
 <div class="admin">
-    <aside class="admin-side">
-        <a class="brand" href="<?= url('/admin') ?>">
-            <span class="brand-mark">KF</span>
-            <span class="brand-text">
-                <span class="brand-name">Kachi</span>
-                <span class="brand-sub">Back office</span>
-            </span>
-        </a>
+
+    <!-- Small screens only: the drawer trigger, always within reach. -->
+    <div class="admin-bar">
+        <button type="button" class="admin-burger" data-drawer-toggle
+                aria-expanded="false" aria-controls="admin-drawer" aria-label="Open navigation menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <span class="brand-mark">KF</span>
+        <span class="title"><?= e($title) ?></span>
+        <span class="spacer"></span>
+        <?php if ($unread + $openQuotes + $openBookings > 0): ?>
+            <span class="pill" title="Items needing attention"><?= $unread + $openQuotes + $openBookings ?></span>
+        <?php endif; ?>
+    </div>
+
+    <div class="admin-scrim" data-drawer-scrim hidden></div>
+
+    <aside class="admin-side" id="admin-drawer" data-drawer>
+        <div class="flex-between">
+            <a class="brand" href="<?= url('/admin') ?>">
+                <span class="brand-mark">KF</span>
+                <span class="brand-text">
+                    <span class="brand-name">Kachi</span>
+                    <span class="brand-sub">Back office</span>
+                </span>
+            </a>
+            <button type="button" class="admin-burger admin-drawer-close" data-drawer-close
+                    aria-label="Close navigation menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
 
         <nav class="admin-nav">
             <span class="group-label">Overview</span>

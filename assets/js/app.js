@@ -152,3 +152,108 @@
         revealables.forEach(function (el) { observer.observe(el); });
     }
 })();
+
+/* Back-office navigation drawer.
+   Only active below 1024px, where the sidebar is off-canvas. Desktop keeps a
+   permanent sidebar and none of this runs. */
+(function () {
+    'use strict';
+
+    var drawer = document.querySelector('[data-drawer]');
+    var toggle = document.querySelector('[data-drawer-toggle]');
+    var scrim = document.querySelector('[data-drawer-scrim]');
+    if (!drawer || !toggle || !scrim) return;
+
+    var isMobile = function () { return window.matchMedia('(max-width: 1023px)').matches; };
+
+    function open() {
+        drawer.classList.add('is-open');
+        scrim.hidden = false;
+        // Next frame, so the scrim transitions in rather than snapping.
+        requestAnimationFrame(function () { scrim.classList.add('is-open'); });
+        document.body.classList.add('drawer-open');
+        toggle.setAttribute('aria-expanded', 'true');
+
+        var firstLink = drawer.querySelector('a, button');
+        if (firstLink) firstLink.focus();
+    }
+
+    function close(returnFocus) {
+        drawer.classList.remove('is-open');
+        scrim.classList.remove('is-open');
+        document.body.classList.remove('drawer-open');
+        toggle.setAttribute('aria-expanded', 'false');
+
+        // Keep the scrim out of the accessibility tree once it has faded.
+        setTimeout(function () {
+            if (!drawer.classList.contains('is-open')) scrim.hidden = true;
+        }, 300);
+
+        if (returnFocus) toggle.focus();
+    }
+
+    toggle.addEventListener('click', function () {
+        drawer.classList.contains('is-open') ? close(true) : open();
+    });
+
+    scrim.addEventListener('click', function () { close(false); });
+
+    var closer = drawer.querySelector('[data-drawer-close]');
+    if (closer) closer.addEventListener('click', function () { close(true); });
+
+    // Following a link should not leave the drawer covering the new page.
+    drawer.addEventListener('click', function (event) {
+        if (event.target.closest('a[href]') && isMobile()) close(false);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && drawer.classList.contains('is-open')) close(true);
+    });
+
+    // Keep focus inside the drawer while it is covering the page.
+    drawer.addEventListener('keydown', function (event) {
+        if (event.key !== 'Tab' || !drawer.classList.contains('is-open')) return;
+
+        var focusable = drawer.querySelectorAll('a[href], button:not([disabled]), input, select, textarea');
+        if (!focusable.length) return;
+
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
+    // Resizing up to desktop must not leave the body scroll-locked.
+    window.addEventListener('resize', function () {
+        if (!isMobile() && drawer.classList.contains('is-open')) close(false);
+    });
+})();
+
+/* Data tables on phones.
+   Below 768px each row becomes a stacked card. Labels are copied from the
+   table's own <th> cells, so this works for every admin table without any
+   per-page markup and cannot fall out of sync with the headers. */
+(function () {
+    'use strict';
+
+    document.querySelectorAll('.admin-content .table').forEach(function (table) {
+        var headers = [].map.call(table.querySelectorAll('thead th'), function (th) {
+            return th.textContent.trim();
+        });
+        if (!headers.length) return;
+
+        table.querySelectorAll('tbody tr').forEach(function (row) {
+            [].forEach.call(row.cells, function (cell, index) {
+                if (headers[index]) cell.setAttribute('data-label', headers[index]);
+            });
+        });
+
+        table.classList.add('table-stacked');
+    });
+})();
