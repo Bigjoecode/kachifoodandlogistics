@@ -24,6 +24,11 @@ package-lock.json.bak
 # --- Generated locally, not deployed ----------------------------------------
 /tools/shots/
 
+# Original client photography. `npm run sitepics` turns these into the
+# optimised assets in assets/img/photos, which are committed and deployed.
+# Keep the originals backed up outside the repository.
+/sitepics/
+
 # --- Runtime ------------------------------------------------------------------
 # Customer-uploaded product images live on the server, not in git.
 /assets/uploads/*

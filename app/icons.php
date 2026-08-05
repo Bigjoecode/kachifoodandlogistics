@@ -105,6 +105,23 @@ function icon(string $name, string $class = 'size-5', string $label = ''): strin
         . $paths . '</svg>';
 }
 
+/**
+ * Category slug -> bundled header photograph, where one exists.
+ *
+ * Mapped here rather than stored in a column: the photos ship with the code,
+ * so a schema change would buy nothing. Categories we have no photograph for
+ * fall back to their icon.
+ */
+function category_photo(string $slug): ?string
+{
+    $photos = [
+        'grains-dry-foods'     => 'img/photos/cat-grains.jpg',
+        'oils'                 => 'img/photos/cat-oils.jpg',
+        'household-essentials' => 'img/photos/cat-household.jpg',
+    ];
+    return $photos[$slug] ?? null;
+}
+
 /** Category slug -> icon name, with a sensible fallback. */
 function category_icon(string $slug): string
 {

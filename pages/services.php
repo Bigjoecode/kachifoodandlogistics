@@ -2,7 +2,7 @@
 partial('header', [
     'title'       => page_title('Food supply and logistics services in Delta State'),
     'description' => 'Wholesale food supply, corporate procurement, cold storage, truck hire, van hire, relocations and scheduled delivery across Asaba, Warri, Sapele, Ughelli and the rest of Delta State.',
-    'ogImage'     => 'signage.jpg',
+    'ogImage'     => 'photos/stock-sacks.jpg',
 ]);
 ?>
 
@@ -79,6 +79,21 @@ partial('header', [
                     <h3 class="mt-5 text-lg"><?= $heading ?></h3>
                     <p class="mt-2.5 text-sm leading-relaxed text-ink-500"><?= $copy ?></p>
                 </article>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-3">
+            <?php foreach ([
+                ['fleet-truck-sq', 'The KACHI delivery truck on the road in Asaba'],
+                ['haulage',        'Sacks being loaded for a haulage run'],
+                ['fleet-car',      'A KACHI branded company vehicle'],
+            ] as [$photo, $alt]): ?>
+                <picture>
+                    <source srcset="<?= asset('img/photos/' . $photo . '.webp') ?>" type="image/webp">
+                    <img src="<?= asset('img/photos/' . $photo . '.jpg') ?>" alt="<?= e($alt) ?>"
+                         class="h-56 w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                         loading="lazy" width="1200" height="800">
+                </picture>
             <?php endforeach; ?>
         </div>
 

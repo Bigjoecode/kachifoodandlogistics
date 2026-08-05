@@ -1,0 +1,117 @@
+{
+  "fleet-truck": {
+    "alt": "KACHI branded delivery truck, \"Now in Asaba\"",
+    "width": 1600,
+    "height": 900
+  },
+  "fleet-truck-sq": {
+    "alt": "KACHI branded delivery truck",
+    "width": 900,
+    "height": 900
+  },
+  "fleet-car": {
+    "alt": "KACHI branded company car listing its services",
+    "width": 1200,
+    "height": 800
+  },
+  "haulage": {
+    "alt": "Sacks being loaded onto a haulage truck",
+    "width": 1600,
+    "height": 900
+  },
+  "market": {
+    "alt": "The Asaba market district we buy and deliver in",
+    "width": 1600,
+    "height": 900
+  },
+  "stall-team": {
+    "alt": "KACHI staff at the market stall",
+    "width": 1200,
+    "height": 800
+  },
+  "stall": {
+    "alt": "Stall stocked with sacks, tins and dry goods",
+    "width": 1200,
+    "height": 800
+  },
+  "stock-basins": {
+    "alt": "Basins of assorted grains, beans and dry goods",
+    "width": 1200,
+    "height": 800
+  },
+  "stock-sacks": {
+    "alt": "Open sacks of grains and beans on the stall",
+    "width": 1600,
+    "height": 900
+  },
+  "stall-serving": {
+    "alt": "Serving a customer at the stall",
+    "width": 1200,
+    "height": 800
+  },
+  "shelf-packaged": {
+    "alt": "Shelf of packaged goods, oils and tomato paste",
+    "width": 1200,
+    "height": 800
+  },
+  "oil-cartons": {
+    "alt": "Cooking oil kegs stacked beside carton goods",
+    "width": 1200,
+    "height": 800
+  },
+  "cat-grains": {
+    "alt": "Grains and dry foods",
+    "width": 900,
+    "height": 600
+  },
+  "cat-oils": {
+    "alt": "Cooking oil in bulk kegs",
+    "width": 900,
+    "height": 600
+  },
+  "cat-household": {
+    "alt": "Packaged household goods",
+    "width": 900,
+    "height": 600
+  },
+  "grains-generic": {
+    "alt": "Loose grain in an open sack",
+    "width": 900,
+    "height": 600
+  },
+  "prod-rice-white": {
+    "alt": "White rice in an open 50kg sack",
+    "width": 900,
+    "height": 900
+  },
+  "prod-rice-parboiled": {
+    "alt": "Parboiled rice in an open sack",
+    "width": 900,
+    "height": 900
+  },
+  "prod-rice-parboiled-2": {
+    "alt": "Parboiled rice, close crop",
+    "width": 900,
+    "height": 900
+  },
+  "prod-beans-brown": {
+    "alt": "Brown honey beans in an open sack",
+    "width": 900,
+    "height": 900
+  },
+  "prod-beans-white": {
+    "alt": "White beans in an open sack",
+    "width": 900,
+    "height": 900
+  },
+  "prod-oil-kegs": {
+    "alt": "Cooking oil in 25L kegs",
+    "width": 900,
+    "height": 900
+  },
+  "prod-groundnuts": {
+    "alt": "Raw groundnuts in an open sack",
+    "width": 900,
+    "height": 900
+  }
+}

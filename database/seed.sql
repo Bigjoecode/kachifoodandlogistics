@@ -270,3 +270,13 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('bank_account_no',   '1012345678'),
 ('cac_number',        'RC: 9651491'),
 ('opening_hours',     'Mon - Sat, 7:30am - 7:00pm | Sun, 10:00am - 4:00pm');
+
+-- Catalogue photography bundled with the code (see assets/img/photos).
+-- Kept in step with database/migrations/20260805_add_catalogue_photography.sql
+-- so a fresh install and an upgraded one end up identical.
+UPDATE products SET image = 'img/photos/prod-rice-white.jpg'       WHERE slug = 'local-rice-50kg';
+UPDATE products SET image = 'img/photos/prod-rice-parboiled.jpg'   WHERE slug = 'foreign-parboiled-rice-50kg';
+UPDATE products SET image = 'img/photos/prod-rice-parboiled-2.jpg' WHERE slug = 'parboiled-rice-25kg';
+UPDATE products SET image = 'img/photos/prod-beans-brown.jpg'      WHERE slug = 'brown-honey-beans-50kg';
+UPDATE products SET image = 'img/photos/prod-beans-white.jpg'      WHERE slug = 'white-beans-50kg';
+UPDATE products SET image = 'img/photos/prod-oil-kegs.jpg'         WHERE slug = 'vegetable-oil-25l';

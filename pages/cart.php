@@ -69,7 +69,7 @@ partial('header', ['title' => page_title('Your cart')]);
                                 <a href="<?= url('/products/' . $product['slug']) ?>"
                                    class="relative grid size-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-ink-200 bg-navy-50">
                                     <?php if (!empty($product['image'])): ?>
-                                        <img src="<?= e(UPLOAD_URL . '/' . $product['image']) ?>" alt=""
+                                        <img src="<?= e(product_image_url($product['image'])) ?>" alt=""
                                              class="size-full object-cover" loading="lazy" width="80" height="80">
                                     <?php else: ?>
                                         <span class="text-navy-500"><?= icon(category_icon($product['category_slug'] ?? ''), 'size-8') ?></span>

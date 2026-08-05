@@ -79,13 +79,17 @@ $vehicleIcons = ['Motorcycle' => 'route', 'Mini Van' => 'truck', 'Cargo Van' => 
 partial('header', [
     'title'       => page_title('Book logistics, truck hire and van hire in Asaba'),
     'description' => 'Hire a motorcycle, van, truck or flatbed anywhere in Delta State. Get an instant price estimate, book online and track your delivery from pickup to drop-off.',
-    'ogImage'     => 'truck.jpg',
+    'ogImage'     => 'photos/fleet-truck.jpg',
 ]);
 ?>
 
 <!-- Hero -->
 <section class="relative isolate overflow-hidden bg-navy-900">
-    <img src="<?= asset('img/truck.jpg') ?>" alt="" class="absolute inset-0 size-full object-cover opacity-20" width="1200" height="800">
+    <picture>
+        <source srcset="<?= asset('img/photos/fleet-truck.webp') ?>" type="image/webp">
+        <img src="<?= asset('img/photos/fleet-truck.jpg') ?>" alt=""
+             class="absolute inset-0 size-full object-cover opacity-25" width="1600" height="900">
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-900/95 to-navy-800/70"></div>
 
     <div class="shell relative py-14 lg:py-20">

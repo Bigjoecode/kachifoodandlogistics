@@ -174,6 +174,35 @@ function time_ago(?string $datetime): string
     return date('d M Y', $ts);
 }
 
+/**
+ * URL for a product photo.
+ *
+ * Two sources share the same column. Photos shipped with the repository are
+ * stored as a path under assets/ (e.g. "img/photos/prod-rice-white.jpg") and
+ * are deployed with the code. Anything uploaded through the back office is a
+ * bare filename living in assets/uploads, which is server-owned and excluded
+ * from deploys.
+ */
+function product_image_url(?string $image): ?string
+{
+    $image = trim((string) $image);
+    if ($image === '') {
+        return null;
+    }
+    return str_starts_with($image, 'img/') ? asset($image) : UPLOAD_URL . '/' . $image;
+}
+
+/** Matching WebP for a bundled photo, or null when there is not one. */
+function product_image_webp(?string $image): ?string
+{
+    $image = trim((string) $image);
+    if ($image === '' || !str_starts_with($image, 'img/') || !str_ends_with($image, '.jpg')) {
+        return null;
+    }
+    $webp = substr($image, 0, -4) . '.webp';
+    return is_file(ROOT_PATH . '/assets/' . $webp) ? asset($webp) : null;
+}
+
 /** Initials used for the generated product/category tiles. */
 function initials(string $name, int $max = 2): string
 {

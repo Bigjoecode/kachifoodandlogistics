@@ -122,6 +122,29 @@ the labels cannot drift from the headers.
 browser — 19 checks covering open, close by four routes, ARIA state, scroll lock, focus,
 table stacking and desktop inertness.
 
+### Catalogue and site photography
+
+The client supplied 39 phone photos of the Asaba stall, stock and vehicles.
+[tools/build-sitepics.js](tools/build-sitepics.js) maps the useful ones to purposeful
+names, crops them to the aspect ratios the templates use, and writes JPEG **and** WebP
+(`npm run sitepics`). Every `<img>` sits inside a `<picture>` with a WebP source.
+
+Product photos are assigned **only where the contents are unmistakable** — the three rice
+lines, both bean lines and the oil kegs. Two of the grain shots could be millet, sorghum or
+paddy rice, so they are used as page imagery rather than labelled as a specific product: a
+wrong photo on a product page is worse than no photo, because the customer expects what
+they were shown. Products without a photo keep the branded category tile.
+
+`products.image` now holds either a bundled path (`img/photos/…`, deployed with the code)
+or a bare filename from a back-office upload (`assets/uploads/`, server-owned and excluded
+from deploys). `product_image_url()` resolves both. Category header photos are mapped in
+`category_photo()` rather than stored, since the files ship with the code and a column
+would buy nothing.
+
+The originals in `sitepics/` are git-ignored — 9.8MB of unoptimised phone photos have no
+place in a public repository. The 5.5MB of derived assets are committed because the site
+serves them. Keep the originals backed up outside the repo before re-running the build.
+
 ### Accessibility and performance
 
 - Every interactive control is at least 44px tall (`min-h-11` on `.btn`, `.input`, `.qty`).

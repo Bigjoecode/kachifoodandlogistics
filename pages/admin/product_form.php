@@ -240,7 +240,7 @@ partial('admin_header', [
             <h4>Image</h4>
             <?php if (!empty($product['image'])): ?>
                 <div class="thumb mb-2" style="border-radius:var(--radius)">
-                    <img src="<?= e(UPLOAD_URL . '/' . $product['image']) ?>" alt="">
+                    <img src="<?= e(product_image_url($product['image'])) ?>" alt="">
                 </div>
                 <label class="check mb-2">
                     <input type="checkbox" name="remove_image" value="1">

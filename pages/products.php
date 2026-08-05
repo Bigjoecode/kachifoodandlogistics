@@ -26,7 +26,13 @@ partial('header', ['title' => page_title($heading), 'description' => $intro]);
 ?>
 
 <!-- Page header -->
+<?php $categoryPhoto = $activeCat ? category_photo($activeCat['slug']) : null; ?>
 <section class="relative isolate overflow-hidden bg-navy-800">
+    <?php if ($categoryPhoto): ?>
+        <img src="<?= asset($categoryPhoto) ?>" alt=""
+             class="absolute inset-0 size-full object-cover opacity-25" width="900" height="600">
+        <div class="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/90 to-navy-800/60"></div>
+    <?php endif; ?>
     <div class="absolute inset-0 bg-grid opacity-30"></div>
     <div class="absolute -left-24 -top-24 size-72 rounded-full bg-orange-500/20 blur-3xl"></div>
 

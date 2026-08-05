@@ -78,7 +78,7 @@ partial('header', [
             <div class="lg:sticky lg:top-28 lg:self-start">
                 <div class="relative aspect-square overflow-hidden rounded-3xl border border-ink-200 bg-navy-50 shadow-soft">
                     <?php if (!empty($product['image'])): ?>
-                        <img src="<?= e(UPLOAD_URL . '/' . $product['image']) ?>" alt="<?= e($product['name']) ?>"
+                        <img src="<?= e(product_image_url($product['image'])) ?>" alt="<?= e($product['name']) ?>"
                              class="size-full object-cover" width="800" height="800">
                     <?php else: ?>
                         <span class="absolute inset-0 bg-gradient-to-br from-navy-100 via-navy-50 to-orange-100"></span>

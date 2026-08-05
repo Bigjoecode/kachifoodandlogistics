@@ -13,8 +13,12 @@ partial('header', [
 
 <!-- ============================ Hero ============================ -->
 <section class="relative isolate overflow-hidden bg-navy-900">
-    <img src="<?= asset('img/truck.jpg') ?>" alt=""
-         class="absolute inset-0 size-full object-cover object-center opacity-25" width="1200" height="800" fetchpriority="high">
+    <picture>
+        <source srcset="<?= asset('img/photos/fleet-truck.webp') ?>" type="image/webp">
+        <img src="<?= asset('img/photos/fleet-truck.jpg') ?>" alt=""
+             class="absolute inset-0 size-full object-cover object-center opacity-30"
+             width="1600" height="900" fetchpriority="high">
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900/95 to-navy-800/80"></div>
     <div class="absolute inset-0 bg-grid opacity-40"></div>
     <div class="absolute -right-32 -top-32 size-[32rem] rounded-full bg-orange-500/20 blur-3xl"></div>
@@ -268,8 +272,12 @@ partial('header', [
         <div class="overflow-hidden rounded-3xl bg-navy-800 shadow-deep">
             <div class="grid lg:grid-cols-2">
                 <div class="relative min-h-64 lg:min-h-full">
-                    <img src="<?= asset('img/truck.jpg') ?>" alt="A KACHI refrigerated truck ready for dispatch"
-                         class="absolute inset-0 size-full object-cover" loading="lazy" width="1200" height="800">
+                    <picture>
+                        <source srcset="<?= asset('img/photos/haulage.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/haulage.jpg') ?>"
+                             alt="Sacks of stock being loaded onto a KACHI haulage truck"
+                             class="absolute inset-0 size-full object-cover" loading="lazy" width="1600" height="900">
+                    </picture>
                     <div class="absolute inset-0 bg-gradient-to-t from-navy-900/70 to-transparent lg:bg-gradient-to-r"></div>
                 </div>
 
@@ -358,11 +366,62 @@ partial('header', [
             </div>
 
             <div class="grid gap-4">
-                <img src="<?= asset('img/signage.jpg') ?>" alt="KACHI branded signage at the Asaba head office"
-                     class="w-full rounded-2xl border border-ink-200 object-cover shadow-soft" loading="lazy" width="1200" height="800">
-                <img src="<?= asset('img/merch.jpg') ?>" alt="KACHI branded uniforms, stationery and staff identification"
-                     class="w-full rounded-2xl border border-ink-200 object-cover shadow-soft" loading="lazy" width="1400" height="600">
+                <picture>
+                    <source srcset="<?= asset('img/photos/market.webp') ?>" type="image/webp">
+                    <img src="<?= asset('img/photos/market.jpg') ?>"
+                         alt="The Asaba market district KACHI buys and delivers in"
+                         class="w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                         loading="lazy" width="1600" height="900">
+                </picture>
+                <div class="grid grid-cols-2 gap-4">
+                    <picture>
+                        <source srcset="<?= asset('img/photos/stall-team.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/stall-team.jpg') ?>"
+                             alt="KACHI staff serving customers at the market stall"
+                             class="h-full w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                             loading="lazy" width="1200" height="800">
+                    </picture>
+                    <picture>
+                        <source srcset="<?= asset('img/photos/fleet-car.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/fleet-car.jpg') ?>"
+                             alt="A KACHI branded company vehicle"
+                             class="h-full w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                             loading="lazy" width="1200" height="800">
+                    </picture>
+                </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================ Inside the business ============================ -->
+<section class="section bg-white">
+    <div class="shell">
+        <div class="mx-auto mb-12 max-w-2xl text-center">
+            <p class="eyebrow"><?= icon('building', 'size-3.5') ?>Inside the business</p>
+            <h2 class="h-section mt-3">This is the actual stall, stock and fleet</h2>
+            <p class="lede mt-4">
+                No stock photography. These are our sacks, our vehicles and our people in Asaba.
+            </p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <?php foreach ([
+                ['stock-sacks',   'Open sacks of grains and beans on the KACHI stall',      'sm:col-span-2'],
+                ['stall',         'The KACHI stall stocked with sacks, tins and dry goods', ''],
+                ['oil-cartons',   'Cooking oil kegs stacked beside carton goods',           ''],
+                ['stock-basins',  'Basins of assorted grains, beans and dry goods',         ''],
+                ['stall-serving', 'A KACHI team member serving a customer',                 ''],
+            ] as [$photo, $alt, $span]): ?>
+                <figure class="group overflow-hidden rounded-2xl border border-ink-200 shadow-soft <?= $span ?>" data-reveal>
+                    <picture>
+                        <source srcset="<?= asset('img/photos/' . $photo . '.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/' . $photo . '.jpg') ?>" alt="<?= e($alt) ?>"
+                             class="h-56 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 sm:h-64"
+                             loading="lazy" width="1200" height="800">
+                    </picture>
+                </figure>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>

@@ -12,7 +12,7 @@ $href     = url('/products/' . $product['slug']);
 
     <a href="<?= $href ?>" class="relative block aspect-[4/3] overflow-hidden bg-navy-50" tabindex="-1" aria-hidden="true">
         <?php if (!empty($product['image'])): ?>
-            <img src="<?= e(UPLOAD_URL . '/' . $product['image']) ?>" alt=""
+            <img src="<?= e(product_image_url($product['image'])) ?>" alt=""
                  class="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                  loading="lazy" width="400" height="300">
         <?php else: ?>

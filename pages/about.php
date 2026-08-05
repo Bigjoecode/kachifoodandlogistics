@@ -49,8 +49,12 @@ partial('header', [
                 </div>
             </div>
 
-            <img src="<?= asset('img/signage.jpg') ?>" alt="KACHI branded signage at the Asaba head office reception"
-                 class="w-full rounded-3xl border border-ink-200 shadow-soft" loading="lazy" width="1200" height="800">
+            <picture>
+                <source srcset="<?= asset('img/photos/market.webp') ?>" type="image/webp">
+                <img src="<?= asset('img/photos/market.jpg') ?>"
+                     alt="The Asaba market district where KACHI sources and delivers"
+                     class="w-full rounded-3xl border border-ink-200 shadow-soft" loading="lazy" width="1600" height="900">
+            </picture>
         </div>
     </div>
 </section>
@@ -78,8 +82,30 @@ partial('header', [
 <section class="section bg-white">
     <div class="shell">
         <div class="grid items-center gap-12 lg:grid-cols-2">
-            <img src="<?= asset('img/merch.jpg') ?>" alt="KACHI branded uniforms, business cards, staff identification and signage"
-                 class="w-full rounded-3xl border border-ink-200 shadow-soft lg:order-2" loading="lazy" width="1400" height="600">
+            <div class="grid gap-4 lg:order-2">
+                <picture>
+                    <source srcset="<?= asset('img/photos/stall-team.webp') ?>" type="image/webp">
+                    <img src="<?= asset('img/photos/stall-team.jpg') ?>"
+                         alt="KACHI staff at the market stall"
+                         class="w-full rounded-3xl border border-ink-200 shadow-soft" loading="lazy" width="1200" height="800">
+                </picture>
+                <div class="grid grid-cols-2 gap-4">
+                    <picture>
+                        <source srcset="<?= asset('img/photos/stock-basins.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/stock-basins.jpg') ?>"
+                             alt="Basins of assorted grains and beans"
+                             class="h-full w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                             loading="lazy" width="1200" height="800">
+                    </picture>
+                    <picture>
+                        <source srcset="<?= asset('img/photos/fleet-truck-sq.webp') ?>" type="image/webp">
+                        <img src="<?= asset('img/photos/fleet-truck-sq.jpg') ?>"
+                             alt="The KACHI delivery truck"
+                             class="h-full w-full rounded-2xl border border-ink-200 object-cover shadow-soft"
+                             loading="lazy" width="900" height="900">
+                    </picture>
+                </div>
+            </div>
 
             <div class="lg:order-1">
                 <p class="eyebrow"><?= icon('route', 'size-3.5') ?>How we work</p>
