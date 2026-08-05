@@ -73,7 +73,7 @@ partial('admin_header', [
                             <?php if (is_admin() && (int) $customer['id'] !== auth_id()): ?>
                                 <form method="post" action="<?= url('/admin/customers/' . $customer['id']) ?>" class="flex gap-sm">
                                     <?= csrf_field() ?>
-                                    <select class="select" name="role" style="width:auto;padding:.35rem 2rem .35rem .6rem;font-size:.82rem">
+                                    <select class="select" name="role" style="width:auto;max-width:100%;padding:.35rem 2rem .35rem .6rem;font-size:.82rem">
                                         <?php foreach (['customer' => 'Customer', 'staff' => 'Staff', 'admin' => 'Admin'] as $role => $label): ?>
                                             <option value="<?= $role ?>" <?= $customer['role'] === $role ? 'selected' : '' ?>><?= $label ?></option>
                                         <?php endforeach; ?>

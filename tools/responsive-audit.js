@@ -50,19 +50,62 @@ function measure() {
     const style = getComputedStyle(el);
     if (style.display === 'none' || style.visibility === 'hidden' || style.position === 'fixed') return;
 
+    // Visually-hidden helpers are 1px boxes by design.
+    if (el.closest('.sr-only, .skip-link')) return;
+    // Decorative glows are absolutely positioned and deliberately clipped.
+    if (style.position === 'absolute' && el.getAttribute('aria-hidden') !== 'false' && !el.textContent.trim()) return;
+
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 && rect.height === 0) return;
 
-    // An element sticking out past the right edge, unless it is inside a
-    // deliberately scrollable container (tables, chart strips).
+    // (a) Sticking out past the viewport. Only an explicitly scrollable
+    //     ancestor excuses this; overflow:hidden does not, because that
+    //     silently clips content rather than making it reachable.
     if (rect.right > vw + 1 || rect.left < -1) {
       let scrollable = false;
       for (let p = el.parentElement; p; p = p.parentElement) {
-        const ps = getComputedStyle(p);
-        if (ps.overflowX === 'auto' || ps.overflowX === 'scroll' || ps.overflowX === 'hidden') { scrollable = true; break; }
+        const ox = getComputedStyle(p).overflowX;
+        if (ox === 'auto' || ox === 'scroll') { scrollable = true; break; }
       }
       if (!scrollable) {
         problems.push({ type: 'element-overflow', detail: `${describe(el)} right=${Math.round(rect.right)} vw=${vw}` });
+      }
+    }
+
+    // (b) Escaping its own container. This is the class of bug that a
+    //     viewport-only check misses entirely: a control can sit inside the
+    //     screen while still spilling out of the card that holds it.
+    const parent = el.parentElement;
+    if (parent && parent !== document.body) {
+      const pStyle = getComputedStyle(parent);
+      const pRect = parent.getBoundingClientRect();
+      const escapes = pStyle.overflowX === 'visible' && pRect.width > 0 &&
+                      (rect.right > pRect.right + 1.5 || rect.left < pRect.left - 1.5);
+      if (escapes && style.position !== 'absolute' && style.position !== 'sticky') {
+        problems.push({
+          type: 'escapes-container',
+          detail: `${describe(el)} spills ${Math.round(Math.max(rect.right - pRect.right, pRect.left - rect.left))}px out of ${describe(parent)}`,
+        });
+      }
+    }
+
+    // (c) Real content clipped by an overflow:hidden box. Measured from
+    //     in-flow children only: absolutely positioned decoration is meant
+    //     to be clipped and would otherwise flood the report.
+    if (style.overflowX === 'hidden' && el.clientWidth > 0 && el.children.length &&
+        !(el instanceof SVGElement) && el.tagName !== 'svg') {
+      let widest = 0;
+      for (const child of el.children) {
+        const cs = getComputedStyle(child);
+        if (cs.position === 'absolute' || cs.position === 'fixed' || cs.display === 'none') continue;
+        widest = Math.max(widest, child.getBoundingClientRect().right);
+      }
+      const boxRight = rect.left + el.clientWidth;
+      if (widest > boxRight + 2) {
+        problems.push({
+          type: 'content-clipped',
+          detail: `${describe(el)} content reaches ${Math.round(widest - rect.left)}px in a ${el.clientWidth}px box`,
+        });
       }
     }
   });

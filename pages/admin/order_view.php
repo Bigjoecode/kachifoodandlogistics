@@ -92,7 +92,7 @@ partial('admin_header', [
 
                 <div class="table-wrap">
                     <table class="table">
-                        <thead><tr><th>Item</th><th class="num">Qty</th><th style="width:170px">Unit price</th><th class="num">Line total</th></tr></thead>
+                        <thead><tr><th>Item</th><th class="num">Qty</th><th class="nowrap">Unit price</th><th class="num">Line total</th></tr></thead>
                         <tbody>
                         <?php foreach ($items as $item): ?>
                             <tr>
@@ -114,12 +114,12 @@ partial('admin_header', [
 
                 <div class="card-foot">
                     <div class="flex-between flex-wrap">
-                        <div class="field mb-0" style="max-width:200px">
+                        <div class="field mb-0" style="max-width:min(200px, 100%)">
                             <label for="delivery_fee">Delivery fee</label>
                             <input class="input" type="number" step="0.01" min="0" id="delivery_fee"
                                    name="delivery_fee" value="<?= e(number_format((float) $order['delivery_fee'], 2, '.', '')) ?>">
                         </div>
-                        <div style="min-width:220px">
+                        <div style="flex:1 1 220px;min-width:0">
                             <div class="summary-row"><span class="label">Subtotal</span><span><?= money($order['subtotal']) ?></span></div>
                             <div class="summary-row"><span class="label">Delivery</span><span><?= money($order['delivery_fee']) ?></span></div>
                             <div class="summary-total"><span>Total</span><span><?= money($order['total']) ?></span></div>

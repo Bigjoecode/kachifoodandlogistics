@@ -140,7 +140,7 @@ partial('header', [
               class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_23rem] lg:items-start">
             <?= csrf_field() ?>
 
-            <div class="space-y-6">
+            <div class="min-w-0 space-y-6">
 
                 <!-- Job -->
                 <fieldset class="card card-pad">
@@ -351,7 +351,7 @@ partial('header', [
             </div>
 
             <!-- Estimator -->
-            <aside class="lg:sticky lg:top-28">
+            <aside class="min-w-0 lg:sticky lg:top-28">
                 <div class="card overflow-hidden">
                     <div class="bg-navy-700 px-6 py-5 text-white">
                         <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-400">

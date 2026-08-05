@@ -84,8 +84,22 @@ so the catalogue never looks half-finished.
 ### Responsive behaviour
 
 [tools/responsive-audit.js](tools/responsive-audit.js) drives every route in a real browser at
-**320 / 390 / 768 / 1024px** and fails on horizontal page overflow, elements wider than the
-viewport, undersized touch targets and sub-12px text.
+**320 / 390 / 768 / 1024px** and fails on five classes of defect:
+
+| Check | Catches |
+|---|---|
+| `page-overflow` | The document scrolling sideways |
+| `element-overflow` | Anything past the viewport edge, unless an ancestor genuinely scrolls |
+| `escapes-container` | A child spilling out of its own parent while still on screen |
+| `content-clipped` | In-flow content cut off by an `overflow: hidden` box |
+| `touch-target` / `tiny-text` | Controls under 44px, links under 24px, text under 12px |
+
+The middle two exist because a viewport-only check is not enough: a date input can sit
+comfortably inside the screen while spilling out of the card that holds it, and a stat card
+can be squeezed until its value is clipped without the page ever scrolling sideways. Both
+happened in the back office and both passed an earlier, weaker version of this audit.
+Decorative absolutely-positioned elements and visually-hidden helpers are excluded, and SVG
+internals are skipped because child paths are measured in user units rather than CSS pixels.
 
 Thresholds follow the actual standards rather than one blanket number:
 

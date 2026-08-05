@@ -129,7 +129,7 @@ partial('header', [
                     <div class="flex flex-wrap items-end justify-between gap-4">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-ink-400">Retail price</p>
-                            <p class="mt-1 flex items-baseline gap-2">
+                            <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                                 <span class="price font-display text-4xl font-extrabold text-navy-700"><?= money($retail) ?></span>
                                 <?php if ($onSale): ?>
                                     <span class="text-base text-ink-400 line-through"><?= money($product['retail_price']) ?></span>

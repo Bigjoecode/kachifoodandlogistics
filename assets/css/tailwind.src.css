@@ -132,8 +132,8 @@
     /* --- Buttons --------------------------------------------------------- */
     /* min-h-11 keeps every control at or above the 44px touch target. */
     .btn {
-        @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl
-               px-5 py-2.5 text-sm font-semibold whitespace-nowrap
+        @apply inline-flex min-h-11 max-w-full cursor-pointer items-center justify-center gap-2
+               rounded-xl px-5 py-2.5 text-center text-sm font-semibold text-balance-safe
                transition-all duration-200 ease-out
                focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-500/35
                disabled:pointer-events-none disabled:opacity-50;

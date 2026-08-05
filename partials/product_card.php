@@ -50,7 +50,7 @@ $href     = url('/products/' . $product['slug']);
         <p class="text-sm leading-relaxed text-ink-500"><?= e(excerpt($product['summary'], 74)) ?></p>
 
         <div class="mt-auto pt-3">
-            <div class="flex items-baseline gap-2">
+            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span class="price font-display text-xl font-extrabold text-navy-700"><?= money($retail) ?></span>
                 <?php if ($onSale): ?>
                     <span class="text-sm text-ink-400 line-through"><?= money($product['retail_price']) ?></span>

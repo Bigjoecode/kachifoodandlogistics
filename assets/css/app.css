@@ -283,7 +283,7 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
 .required { color: var(--danger-500); }
 
 .input, .select, .textarea {
-    width: 100%; padding: .68rem .85rem;
+    width: 100%; min-width: 0; max-width: 100%; padding: .68rem .85rem;
     font: inherit; font-size: .94rem; color: var(--ink-900);
     background: var(--white);
     border: 1px solid var(--ink-200); border-radius: var(--radius-sm);
@@ -302,6 +302,15 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
     padding-right: 2.4rem;
 }
 .input.has-error, .select.has-error, .textarea.has-error { border-color: var(--danger-500); }
+
+/* Mobile browsers give date/time inputs an intrinsic minimum width that
+   width:100% does not beat, which pushes them out of their card. */
+input[type="date"].input,
+input[type="time"].input,
+input[type="datetime-local"].input {
+    min-width: 0; max-width: 100%;
+    -webkit-appearance: none; appearance: none;
+}
 .error-text { color: var(--danger-500); font-size: .82rem; margin-top: .35rem; }
 
 .field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
@@ -669,14 +678,18 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
 .admin-content { padding: 1.75rem; }
 .admin-actions { display: flex; gap: .55rem; flex-wrap: wrap; align-items: center; }
 
-.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.15rem; }
+/* auto-fit means the card count follows the width, so no page needs to
+   hard-code a column count and no breakpoint can be bypassed. */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.15rem; }
 .stat {
     background: var(--white); border: 1px solid var(--ink-200);
     border-radius: var(--radius-lg); padding: 1.25rem;
 }
 .stat .k { font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-400); font-weight: 650; }
 .stat .v { font-family: var(--font-head); font-size: 1.85rem; font-weight: 800; color: var(--ink-900); letter-spacing: -.03em; line-height: 1.2; margin: .35rem 0 .15rem; }
-.stat .m { font-size: .83rem; color: var(--ink-500); }
+.stat .m { font-size: .83rem; color: var(--ink-500); overflow-wrap: anywhere; }
+/* Links in the stat meta are standalone targets, not running prose. */
+.stat .m a { display: inline-flex; align-items: center; min-height: 24px; }
 .stat.accent { background: linear-gradient(140deg, var(--brand-700), var(--brand-500)); border-color: transparent; color: var(--brand-100); }
 .stat.accent .k { color: rgba(255, 255, 255, .7); }
 .stat.accent .v { color: var(--white); }
@@ -701,7 +714,7 @@ body { display: flex; flex-direction: column; min-height: 100vh; }
     background: var(--white); border: 1px solid var(--ink-200);
     border-radius: var(--radius-lg); padding: 1rem 1.15rem; margin-bottom: 1.25rem;
 }
-.data-filters .field { margin: 0; min-width: 150px; flex: 1 1 150px; }
+.data-filters .field { margin: 0; min-width: 0; flex: 1 1 170px; }
 .data-filters .field label { font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-400); }
 
 .tabs { display: flex; gap: .3rem; border-bottom: 1px solid var(--ink-200); margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -791,7 +804,6 @@ a.tiny { display: inline-flex; align-items: center; min-height: 24px; }
 /* --- Responsive ----------------------------------------------------------- */
 @media (max-width: 1080px) {
     .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .split { grid-template-columns: minmax(0, 1fr); }
 }
@@ -888,15 +900,19 @@ a.tiny { display: inline-flex; align-items: center; min-height: 24px; }
     .admin-content .table.table-stacked tr:hover { background: var(--white); }
 
     .admin-content .table.table-stacked td {
-        display: flex; align-items: center; justify-content: space-between;
-        gap: 1rem; padding: .7rem .9rem; text-align: right;
+        display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+        gap: .25rem 1rem; padding: .7rem .9rem; text-align: right;
         border-bottom: 1px solid var(--ink-100);
+        /* References and emails are long single tokens; let them break rather
+           than push the card wider than the screen. */
+        overflow-wrap: anywhere;
     }
+    .admin-content .table.table-stacked td > * { min-width: 0; }
     .admin-content .table.table-stacked td:last-child { border-bottom: 0; }
 
     .admin-content .table.table-stacked td::before {
         content: attr(data-label);
-        flex-shrink: 0; text-align: left;
+        flex: 0 0 auto; text-align: left;
         font-size: .75rem; font-weight: 700; letter-spacing: .05em;
         text-transform: uppercase; color: var(--ink-400);
     }
@@ -908,6 +924,15 @@ a.tiny { display: inline-flex; align-items: center; min-height: 24px; }
 
     .data-filters { padding: .9rem; }
     .data-filters .field { flex: 1 1 100%; min-width: 0; }
+    .data-filters .btn { flex: 1 1 auto; }
+
+    /* Grid and flex children default to min-width:auto, so a long word or
+       a wide control can push a whole column past its parent. */
+    .admin-content .stat,
+    .admin-content .card,
+    .admin-content .split > *,
+    .admin-content .field { min-width: 0; }
+    .admin-content .stat .v { overflow-wrap: anywhere; }
 }
 
 @media (max-width: 900px) {
@@ -943,7 +968,6 @@ a.tiny { display: inline-flex; align-items: center; min-height: 24px; }
 @media (max-width: 720px) {
     .grid-3, .grid-2, .grid-4 { grid-template-columns: minmax(0, 1fr); }
     .field-row, .field-row-3 { grid-template-columns: minmax(0, 1fr); }
-    .stat-grid { grid-template-columns: minmax(0, 1fr); }
     .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
     .topbar-links { display: none; }
     .admin-content, .admin-top { padding: 1.1rem; }

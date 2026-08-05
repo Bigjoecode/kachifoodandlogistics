@@ -18,7 +18,7 @@ partial('admin_header', [
 ]);
 ?>
 
-<div class="stat-grid mb-3" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+<div class="stat-grid mb-3">
     <div class="stat">
         <div class="k">Orders today</div>
         <div class="v"><?= $stats['orders_today'] ?></div>

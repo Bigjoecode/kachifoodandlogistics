@@ -82,9 +82,9 @@ $nav = [
 <!-- Masthead -->
 <header class="sticky top-0 z-40 border-b border-ink-200 bg-white/90 backdrop-blur-lg">
     <div class="shell flex min-h-[4.5rem] items-center gap-4">
-        <a href="<?= url('/') ?>" class="shrink-0" aria-label="<?= e(APP_NAME) ?> — home">
+        <a href="<?= url('/') ?>" class="min-w-0 shrink" aria-label="<?= e(APP_NAME) ?> — home">
             <img src="<?= asset('img/logo.png') ?>" alt="<?= e(APP_NAME) ?>"
-                 class="h-9 w-auto sm:h-11" width="1136" height="392" fetchpriority="high">
+                 class="h-8 w-auto max-w-full sm:h-11" width="1136" height="392" fetchpriority="high">
         </a>
 
         <nav class="ml-auto hidden items-center gap-0.5 lg:flex" aria-label="Primary">
@@ -95,7 +95,7 @@ $nav = [
             <?php endforeach; ?>
         </nav>
 
-        <div class="ml-auto flex items-center gap-2 lg:ml-0">
+        <div class="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2 lg:ml-0">
             <a href="<?= url('/cart') ?>"
                class="btn btn-ghost relative gap-2 px-3"
                aria-label="Cart<?= $cartCount ? ', ' . $cartCount . ' items' : ', empty' ?>">

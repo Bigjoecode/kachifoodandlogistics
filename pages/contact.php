@@ -65,7 +65,7 @@ partial('header', [
                 <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-600">
                     <?= icon('phone-call', 'size-5') ?>
                 </span>
-                <span>
+                <span class="min-w-0">
                     <span class="block text-xs font-bold uppercase tracking-wider text-ink-400">Call us</span>
                     <a class="mt-1 block font-display font-bold text-navy-700 transition-colors hover:text-orange-600"
                        href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone)) ?>"><?= e($phone) ?></a>
@@ -78,7 +78,7 @@ partial('header', [
             </div>
 
             <a href="mailto:<?= e(Setting::get('contact_email', APP_EMAIL)) ?>"
-               class="card card-hover flex items-start gap-4 p-6">
+               class="card card-hover flex min-w-0 items-start gap-4 p-6">
                 <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-navy-50 text-navy-600">
                     <?= icon('mail', 'size-5') ?>
                 </span>
@@ -90,11 +90,11 @@ partial('header', [
             </a>
 
             <?php if ($whatsapp): ?>
-                <a href="https://wa.me/<?= e($whatsapp) ?>" rel="noopener" class="card card-hover flex items-start gap-4 p-6">
+                <a href="https://wa.me/<?= e($whatsapp) ?>" rel="noopener" class="card card-hover flex min-w-0 items-start gap-4 p-6">
                     <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-[#25D366]/15 text-[#128C4A]">
                         <?= icon('message', 'size-5') ?>
                     </span>
-                    <span>
+                    <span class="min-w-0">
                         <span class="block text-xs font-bold uppercase tracking-wider text-ink-400">WhatsApp</span>
                         <span class="mt-1 block font-display font-bold text-navy-700"><?= e($whatsappDisplay ?: 'Chat with sales') ?></span>
                         <span class="mt-0.5 block text-xs text-ink-400">Fastest for quick questions</span>
