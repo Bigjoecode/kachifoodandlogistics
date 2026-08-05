@@ -14,7 +14,7 @@ partial('admin_header', [
     'title'    => 'Dashboard',
     'subtitle' => date('l, j F Y'),
     'actions'  => '<a class="btn btn-ghost btn-sm" href="' . url('/admin/orders') . '">All orders</a>'
-                . '<a class="btn btn-primary btn-sm" href="' . url('/admin/products/new') . '">Add product</a>',
+                . '<a class="btn btn-primary btn-sm" href="' . url('/admin/logistics') . '">All bookings</a>',
 ]);
 ?>
 
