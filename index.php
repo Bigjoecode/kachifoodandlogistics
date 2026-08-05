@@ -66,6 +66,8 @@ $routes = [
     ['GET|POST', '/track',                   'track'],
 
     // --- Accounts -----------------------------------------------------------
+    // First-run administrator creation. 404s once any staff account exists.
+    ['GET|POST', '/setup',                   'setup'],
     ['GET|POST', '/login',                   'auth/login'],
     ['GET|POST', '/register',                'auth/register'],
     ['POST',     '/logout',                  'auth/logout'],

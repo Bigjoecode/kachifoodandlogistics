@@ -26,6 +26,7 @@ if (is_post()) {
     <title>Back office sign in | <?= e(APP_NAME) ?></title>
     <meta name="robots" content="noindex">
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
+    <link rel="icon" type="image/png" href="<?= asset('img/favicon.png') ?>">
     <style>
         body { display: grid; place-items: center; background: var(--brand-900); }
         .signin { width: min(420px, calc(100vw - 2.5rem)); padding: 2rem 0; }

@@ -83,11 +83,30 @@ define('DB_PASS', '…');
 
 `config.local.php` is in the rsync exclude list, so deploys never overwrite it.
 
-### 5. Set up the database, once
+### 5. Create the first administrator
 
-Upload `install.php` manually the first time (the workflow excludes it), open it in a
-browser, run it, then **delete it from the server**. After that, apply schema changes with
-SQL migrations rather than re-running the installer, which drops every table.
+The database sets itself up: on the first request, an empty schema is populated from
+`schema.sql` and `seed.sql`, and any new files in `database/migrations/` are applied once
+each. `install.php` is never deployed.
+
+Neither seed file creates a user account — passwords are hashed by PHP and cannot be seeded
+from SQL — so a fresh install starts with nobody able to sign in. Visit:
+
+```
+https://kachifoodandlogistics.com/setup
+```
+
+Create your administrator there. You are signed straight into the back office, and **the
+route returns 404 from that moment on**, for everyone, on both GET and POST. It cannot be
+used to add a second administrator later; further staff are added from
+**Admin → Customers**.
+
+If `/setup` already 404s on a site you have never signed into, an account exists. Reset it
+with SQL rather than reopening the route:
+
+```sql
+UPDATE users SET password_hash = '<a bcrypt hash you generated>' WHERE email = '…';
+```
 
 ---
 

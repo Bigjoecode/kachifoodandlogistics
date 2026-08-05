@@ -37,6 +37,42 @@ class User
         );
     }
 
+    /** Does the site have anyone who can reach the back office yet? */
+    public static function staffExists(): bool
+    {
+        return (bool) Db::value("SELECT 1 FROM users WHERE role IN ('admin','staff') LIMIT 1");
+    }
+
+    /**
+     * Create the very first administrator, used only by the first-run setup
+     * page. The check and the insert share one transaction and the check takes
+     * a write lock, so two simultaneous requests cannot both create an admin.
+     *
+     * @throws RuntimeException if a staff account already exists.
+     */
+    public static function createFirstAdmin(array $data): int
+    {
+        $pdo = Db::conn();
+        $pdo->beginTransaction();
+
+        try {
+            $exists = Db::value("SELECT 1 FROM users WHERE role IN ('admin','staff') LIMIT 1 FOR UPDATE");
+            if ($exists) {
+                throw new RuntimeException('An administrator already exists.');
+            }
+
+            $id = self::create($data + ['role' => 'admin', 'company' => null,
+                                        'address' => null, 'city' => null, 'state' => null]);
+            $pdo->commit();
+            return $id;
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
     public static function updateProfile(int $id, array $data): void
     {
         Db::run(
