@@ -280,3 +280,95 @@ UPDATE products SET image = 'img/photos/prod-rice-parboiled-2.jpg' WHERE slug = 
 UPDATE products SET image = 'img/photos/prod-beans-brown.jpg'      WHERE slug = 'brown-honey-beans-50kg';
 UPDATE products SET image = 'img/photos/prod-beans-white.jpg'      WHERE slug = 'white-beans-50kg';
 UPDATE products SET image = 'img/photos/prod-oil-kegs.jpg'         WHERE slug = 'vegetable-oil-25l';
+UPDATE products SET image = 'img/photos/prod-poundo-yam-flour.jpg' WHERE slug = 'poundo-yam-flour-10kg';
+UPDATE products SET image = 'img/photos/prod-semovita.jpg'         WHERE slug = 'semovita-10kg';
+UPDATE products SET image = 'img/photos/prod-spaghetti.jpg'        WHERE slug = 'spaghetti-500g-carton';
+UPDATE products SET image = 'img/photos/prod-tomatoes.jpg'         WHERE slug = 'fresh-tomatoes-basket';
+UPDATE products SET image = 'img/photos/prod-pepper-rodo.jpg'      WHERE slug = 'fresh-pepper-rodo-basket';
+UPDATE products SET image = 'img/photos/prod-carrots.jpg'          WHERE slug = 'fresh-carrots-20kg';
+UPDATE products SET image = 'img/photos/prod-puna-yam.jpg'         WHERE slug = 'puna-yam-tubers-lot-10';
+UPDATE products SET image = 'img/photos/prod-plantain.jpg'         WHERE slug = 'plantain-bunch';
+UPDATE products SET image = 'img/photos/prod-sweet-potato.jpg'     WHERE slug = 'sweet-potato-50kg';
+UPDATE products SET image = 'img/photos/prod-red-palm-oil.jpg'     WHERE slug = 'red-palm-oil-25l';
+UPDATE products SET image = 'img/photos/prod-whole-chicken.jpg'    WHERE slug = 'frozen-whole-chicken-10kg';
+UPDATE products SET image = 'img/photos/prod-turkey-wings.jpg'     WHERE slug = 'frozen-turkey-wings-10kg';
+UPDATE products SET image = 'img/photos/prod-goat-meat.jpg'        WHERE slug = 'fresh-goat-meat-20kg';
+UPDATE products SET image = 'img/photos/prod-catfish.jpg'          WHERE slug = 'fresh-cat-fish-10kg';
+UPDATE products SET image = 'img/photos/prod-crayfish.jpg'         WHERE slug = 'dried-crayfish-5kg';
+UPDATE products SET image = 'img/photos/prod-stockfish.jpg'        WHERE slug = 'stock-fish-panla-5kg';
+UPDATE products SET image = 'img/photos/prod-eggs.jpg'             WHERE slug = 'eggs-crate-30';
+UPDATE products SET image = 'img/photos/prod-seasoning-cubes.jpg'  WHERE slug = 'seasoning-cubes-carton';
+UPDATE products SET image = 'img/photos/prod-tomato-paste.jpg'     WHERE slug = 'tomato-paste-70g-carton';
+UPDATE products SET image = 'img/photos/prod-yellow-garri.jpg'     WHERE slug = 'yellow-garri-50kg';
+
+-- Named market lines whose prices change frequently. A zero retail price is
+-- presented as "price on request" by the storefront.
+INSERT INTO products
+    (category_id, name, slug, sku, summary, description, origin, unit, retail_price,
+     wholesale_price, wholesale_min_qty, sale_price, min_order, stock_qty, image, is_featured, is_active)
+VALUES
+(6, 'Blended Pepper', 'blended-pepper', 'KFL-SP-007', 'Fresh pepper blended and ready for cooking.', 'Prepared from fresh peppers in small batches. Request the current price for your preferred quantity.', 'Delta State', '1kg pack', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-blended-pepper.jpg', 0, 1),
+(2, 'Fresh Coconuts', 'fresh-coconuts', 'KFL-VG-006', 'Mature fresh coconuts supplied in counted lots.', 'Whole mature coconuts selected for sound shells and good water content.', 'Delta State', 'lot of 10', 0, NULL, 5, NULL, 1, 0, 'img/photos/prod-coconut.jpg', 0, 1),
+(2, 'Fresh Curry Leaves', 'fresh-curry-leaves', 'KFL-VG-007', 'Aromatic curry leaves harvested fresh.', 'Fresh curry leaves bundled for home, restaurant and catering orders.', 'Delta State', 'bundle', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-curry-leaf.jpg', 0, 1),
+(1, 'Custard Powder', 'custard-powder', 'KFL-GR-014', 'Smooth custard powder for breakfast and catering.', 'Packaged custard powder available by tub or in larger quantities on request.', 'Nigeria', 'tub', 0, NULL, 6, NULL, 1, 0, 'img/photos/prod-custard.jpg', 0, 1),
+(6, 'Fresh Ginger', 'fresh-ginger', 'KFL-SP-008', 'Firm, aromatic fresh ginger roots.', 'Fresh ginger selected for size and freshness, supplied by weight.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-fresh-ginger.jpg', 0, 1),
+(2, 'Fresh Leafy Vegetables', 'fresh-leafy-vegetables', 'KFL-VG-008', 'Fresh market vegetables for soups and stews.', 'Leafy vegetables sourced fresh and bundled for same-day or scheduled delivery.', 'Delta State', 'bundle', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-fresh-vegetables.jpg', 0, 1),
+(6, 'Fresh Garlic', 'fresh-garlic', 'KFL-SP-009', 'Clean, firm garlic bulbs supplied by weight.', 'Fresh garlic bulbs for homes, restaurants and institutional kitchens.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-garlic.jpg', 0, 1),
+(6, 'Ogbono', 'ogbono', 'KFL-SP-010', 'Clean ogbono for thick, flavourful soup.', 'Ogbono supplied whole or prepared in quantities for home and commercial kitchens.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-ogbono.jpg', 0, 1),
+(2, 'Fresh Oha Leaves', 'fresh-oha-leaves', 'KFL-VG-009', 'Fresh oha leaves bundled for soup preparation.', 'Carefully selected fresh oha leaves available in household and catering quantities.', 'South East Nigeria', 'bundle', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-oha-leaf.jpg', 0, 1),
+(5, 'Pomo', 'pomo', 'KFL-PR-009', 'Clean pomo ready for further preparation.', 'Quality cow skin supplied by weight for homes, restaurants and food vendors.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-pomo.jpg', 0, 1),
+(2, 'Fresh Scent Leaves', 'fresh-scent-leaves', 'KFL-VG-010', 'Fresh aromatic scent leaves for soups and stews.', 'Freshly sourced scent leaves bundled for quick delivery.', 'Delta State', 'bundle', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-scent-leaf.jpg', 0, 1),
+(5, 'Snails', 'snails', 'KFL-PR-010', 'Quality snails supplied in counted lots.', 'Snails selected for size and supplied for home, restaurant and event catering.', 'Nigeria', 'lot of 10', 0, NULL, 5, NULL, 1, 0, 'img/photos/prod-snails.jpg', 0, 1),
+(5, 'Titus Fish Tin', 'titus-fish-tin', 'KFL-PR-011', 'Convenient tinned Titus fish for retail and catering.', 'Tinned Titus fish available by the unit or carton. Request the current carton price.', 'Imported', 'tin', 0, NULL, 24, NULL, 1, 0, 'img/photos/prod-titus-tin.jpg', 0, 1);
+
+-- Latest exact-name photography for existing catalogue products.
+UPDATE products SET image = 'img/photos/prod-basmati-rice.jpg'     WHERE slug = 'basmati-rice-5kg';
+UPDATE products SET image = 'img/photos/prod-curry-powder.jpg'     WHERE slug = 'curry-powder-1kg';
+UPDATE products SET image = 'img/photos/prod-dried-thyme.jpg'      WHERE slug = 'dried-thyme-1kg';
+UPDATE products SET image = 'img/photos/prod-fresh-beef.jpg'       WHERE slug = 'fresh-beef-20kg';
+UPDATE products SET image = 'img/photos/prod-frozen-croaker.jpg'   WHERE slug = 'frozen-croaker-fish-20kg';
+UPDATE products SET image = 'img/photos/prod-frozen-mixed-veg.jpg' WHERE slug = 'frozen-mixed-vegetables-10kg';
+UPDATE products SET image = 'img/photos/prod-frozen-titus.jpg'     WHERE slug = 'frozen-titus-fish-20kg';
+UPDATE products SET image = 'img/photos/prod-garden-egg.jpg'       WHERE slug = 'garden-egg-basket';
+UPDATE products SET image = 'img/photos/prod-groundnut-oil.jpg'    WHERE slug = 'groundnut-oil-25l';
+UPDATE products SET image = 'img/photos/prod-ijebu-garri.jpg'      WHERE slug = 'ijebu-garri-50kg';
+UPDATE products SET image = 'img/photos/prod-indomie.jpg'          WHERE slug = 'indomie-noodles-carton';
+UPDATE products SET image = 'img/photos/prod-table-salt.jpg'       WHERE slug = 'iodised-table-salt-50kg';
+UPDATE products SET image = 'img/photos/prod-irish-potato.jpg'     WHERE slug = 'irish-potato-50kg';
+UPDATE products SET image = 'img/photos/prod-margarine.jpg'        WHERE slug = 'margarine-5kg';
+UPDATE products SET image = 'img/photos/prod-red-onions.jpg'       WHERE slug = 'red-onions-100kg';
+UPDATE products SET image = 'img/photos/prod-suya-spice.jpg'       WHERE slug = 'suya-spice-2kg';
+UPDATE products SET image = 'img/photos/prod-white-garri.jpg'      WHERE slug = 'white-garri-50kg';
+
+-- Additional named market lines, shown as price-on-request until a current
+-- price is entered in the back office.
+INSERT INTO products
+    (category_id, name, slug, sku, summary, description, origin, unit, retail_price,
+     wholesale_price, wholesale_min_qty, sale_price, min_order, stock_qty, image, is_featured, is_active)
+VALUES
+(5, 'Assorted Meat', 'assorted-meat', 'KFL-PR-012', 'Clean assorted meat for soups and stews.', 'A selection of properly cleaned beef offal supplied by weight for home and commercial kitchens.', 'Delta State', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-assorted-meat.jpg', 0, 1),
+(2, 'Bell Peppers', 'bell-peppers', 'KFL-VG-011', 'Fresh mixed-colour bell peppers.', 'Firm red, yellow and green bell peppers supplied by weight for homes, restaurants and events.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-bell-peppers.jpg', 0, 1),
+(2, 'Fresh Cucumbers', 'fresh-cucumbers', 'KFL-VG-012', 'Firm fresh cucumbers supplied by weight.', 'Fresh cucumbers selected for firmness and delivered in household or catering quantities.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-cucumber.jpg', 0, 1),
+(2, 'Fresh Cabbage', 'fresh-cabbage', 'KFL-VG-013', 'Firm fresh cabbage heads.', 'Fresh cabbage selected for tight heads and clean outer leaves.', 'Nigeria', 'head', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-cabbage.jpg', 0, 1),
+(2, 'Fresh Okra', 'fresh-okra', 'KFL-VG-014', 'Tender fresh okra for soups and stews.', 'Fresh okra selected for tenderness and supplied by weight.', 'Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-okra.jpg', 0, 1),
+(2, 'Spring Onions', 'spring-onions', 'KFL-VG-015', 'Fresh spring onions in tied bundles.', 'Crisp spring onions supplied in fresh market bundles.', 'Nigeria', 'bundle', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-spring-onions.jpg', 0, 1),
+(5, 'Periwinkle', 'periwinkle', 'KFL-PR-013', 'Clean periwinkle for traditional soups.', 'Periwinkle supplied by weight for home, restaurant and catering orders.', 'South South Nigeria', 'kg', 0, NULL, 10, NULL, 1, 0, 'img/photos/prod-periwinkle.jpg', 0, 1);
+
+-- Household Essentials is retained only for historical/back-office records;
+-- it is not part of the public food catalogue.
+UPDATE products SET is_active = 0, is_featured = 0 WHERE category_id = 8;
+UPDATE categories SET is_active = 0 WHERE id = 8;
+
+-- Ready-made bulk packages.
+INSERT INTO categories (id, name, slug, description, icon, sort_order, is_active) VALUES
+(9, 'Bulk Food Packages', 'bulk-food-packages', 'Ready-made foodstuff bundles for families, celebrations and monthly household restocking.', 'BP', 1, 1);
+
+INSERT INTO products
+    (category_id, name, slug, sku, summary, description, origin, unit, retail_price,
+     wholesale_price, wholesale_min_qty, sale_price, min_order, stock_qty, image, is_featured, is_active)
+VALUES
+(9, 'Complete Bulk Food Package', 'complete-bulk-food-package', 'KFL-BP-001', 'Our largest ready-made package, combining staples, proteins, seasonings and household supplies.', '50kg Optimum rice\n25L Kings vegetable oil\n10L red palm oil\n4 custards of brown beans\n5kg Semovita\n4kg poundo yam\n1 bunch of plantain\n10 yam tubers\n4 packs of salt\n4 packs of Knorr beef cubes\n4 packs of Knorr chicken cubes\n1 carton of round-tin tomatoes\n2 cartons of Super Pack Indomie\n1 custard of fresh tomatoes\nFresh pepper\n1 custard of onions\n1 custard of crayfish\n10 dried catfish\n5 stockfish heads\n2 packs of Vival detergent\n5 Vival tablet soaps\n2 packs of Peak milk refill powder\n2 packs of Milo refill\n2 cups of custard powder\n10 yam tubers\n6 custards of yellow garri\n1 carton of Golden Penny spaghetti\n1 carton of Golden Penny Twist\n4 cups of dry pepper\n2 crates of eggs\n1 custard of hand-peeled egusi\n1/2 custard of ogbono', 'Delta State', 'package', 693600, NULL, 10, NULL, 1, 50, 'img/photos/stock-sacks.jpg', 0, 1),
+(9, 'Premium Family Food Package', 'premium-family-food-package', 'KFL-BP-002', 'A substantial family restock with rice, beans, oils, proteins, noodles and seasonings.', '2 bags of 50kg Optimum rice\n5 custards of white beans\n25L Kings vegetable oil\n20L red palm oil\nHalf portion of a full goat\n1 live chicken\n4 packs of Knorr cubes\n1 custard of onions\n2 cartons of Super Pack Indomie\n4 packs of salt\n24 round-tin tomatoes\n10 wraps of odourless fufu\n2kg wheat\n1 carton of Golden Penny spaghetti\n10 Golden Penny Twist packs\n2 packs of Vival detergent\n3 Vival tablet soaps\n1 cup of custard powder\n15 yam tubers\n1/2 bunch of plantain\n2 cups of curry powder\n2 cups of thyme', 'Delta State', 'package', 451000, NULL, 10, NULL, 1, 50, 'img/photos/stock-basins.jpg', 0, 1),
+(9, 'Party & Home Food Package', 'party-home-food-package', 'KFL-BP-003', 'A balanced party and household bundle with rice, pasta, soup ingredients, drinks and protein.', '1 carton of Party Jollof\n1 carton of Derica\n5L Kings vegetable oil\n4L red palm oil\n1 carton of Golden Penny spaghetti\n2 custards of beans\n1 carton of Super Pack Indomie\n50kg WAW rice\n4kg poundo yam\n2 custards of yellow garri\n1 custard of brown beans\n1 pack of Knorr cubes\n1/2 custard of onions\n1 pack of salt\n5 cups of ground melon (egusi)\n5 cups of ground ogbono\n1/2 custard of ground crayfish\n1 pack of Peak milk refill powder\n1 pack of Milo refill\n1 cup of custard powder\n1 pack of sugar\n1 pack of Vival detergent\n3 Vival tablet soaps\n1 live chicken\n5 smoked catfish\nRipe plantain', 'Delta State', 'package', 403500, NULL, 10, NULL, 1, 50, 'img/photos/stall.jpg', 0, 1),
+(9, 'Essential Pantry Package', 'essential-pantry-package', 'KFL-BP-004', 'An essential pantry restock with rice, oils, pasta, beans, seasonings and breakfast items.', '25kg CAP rice\n3kg Kings vegetable oil refill\n3 yam tubers\n2L red palm oil\n1 carton of Super Pack Indomie\n8 Golden Penny spaghetti packs\n2 cups of ground ogbono\n2 cups of ground egusi\n2kg semolina\n1 custard of brown beans\n1 pack of Vival detergent\n2 Vival tablet soaps\n1 pack of Knorr chicken cubes\n1 pack of salt\nOnions\n1 Milo refill\n1 Dano milk refill\n1 pack of sugar', 'Delta State', 'package', 174500, NULL, 10, NULL, 1, 50, 'img/photos/shelf-packaged.jpg', 0, 1),
+(9, 'Starter Pantry Package', 'starter-pantry-package', 'KFL-BP-005', 'A compact starter bundle covering rice, noodles, pasta, cooking oil and breakfast staples.', '25kg Royal Stallion rice\n8 Golden Penny spaghetti packs\n1 carton of Indomitable noodles\n3 rolls of Sonia sachet tomatoes\n1L Kings vegetable oil\n1 pack of Cabin biscuits\n1 Milo refill\n1 Three Crowns milk refill\n1 pack of Golden Morn\n2 tins of Titus fish\n1 pack of Knorr cubes', 'Delta State', 'package', 110000, NULL, 10, NULL, 1, 50, 'img/photos/oil-cartons.jpg', 0, 1);

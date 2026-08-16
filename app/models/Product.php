@@ -1,6 +1,12 @@
 <?php
 class Product
 {
+    /** Products with changing market prices are displayed as price-on-request. */
+    public static function hasPrice(array $product): bool
+    {
+        return (float) ($product['retail_price'] ?? 0) > 0;
+    }
+
     /**
      * Price for a given line quantity. Wholesale wins once the quantity reaches
      * the product's wholesale threshold; below that, a sale price beats retail.
@@ -127,8 +133,12 @@ class Product
             $params['category_id'] = (int) $filters['category_id'];
         }
         if (!empty($filters['q'])) {
-            $where[]     = '(p.name LIKE :q OR p.summary LIKE :q OR p.sku LIKE :q OR p.origin LIKE :q)';
-            $params['q'] = '%' . $filters['q'] . '%';
+            $where[] = '(p.name LIKE :q_name OR p.summary LIKE :q_summary OR p.sku LIKE :q_sku OR p.origin LIKE :q_origin)';
+            $query = '%' . $filters['q'] . '%';
+            $params['q_name'] = $query;
+            $params['q_summary'] = $query;
+            $params['q_sku'] = $query;
+            $params['q_origin'] = $query;
         }
         if (isset($filters['min']) && $filters['min'] !== '' && $filters['min'] !== null) {
             $where[]       = 'p.retail_price >= :min';
@@ -147,7 +157,7 @@ class Product
         $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
         $orderSql = [
-            'price_asc'  => 'p.retail_price ASC',
+            'price_asc'  => '(p.retail_price <= 0) ASC, p.retail_price ASC',
             'price_desc' => 'p.retail_price DESC',
             'name'       => 'p.name ASC',
             'oldest'     => 'p.created_at ASC',

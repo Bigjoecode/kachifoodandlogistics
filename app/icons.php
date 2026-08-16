@@ -117,6 +117,7 @@ function category_photo(string $slug): ?string
     $photos = [
         'grains-dry-foods'     => 'img/photos/cat-grains.jpg',
         'oils'                 => 'img/photos/cat-oils.jpg',
+        'bulk-food-packages'   => 'img/photos/stock-sacks.jpg',
         'household-essentials' => 'img/photos/cat-household.jpg',
     ];
     return $photos[$slug] ?? null;
@@ -133,6 +134,7 @@ function category_icon(string $slug): string
         'proteins'             => 'beef',
         'spices-seasonings'    => 'flame',
         'frozen-foods'         => 'snowflake',
+        'bulk-food-packages'   => 'package',
         'household-essentials' => 'home',
     ][$slug] ?? 'package';
 }

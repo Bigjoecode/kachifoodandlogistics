@@ -28,7 +28,7 @@ class Category
 
     public static function findBySlug(string $slug): ?array
     {
-        return Db::first('SELECT * FROM categories WHERE slug = ?', [$slug]);
+        return Db::first('SELECT * FROM categories WHERE slug = ? AND is_active = 1', [$slug]);
     }
 
     public static function create(array $data): int

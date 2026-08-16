@@ -6,35 +6,41 @@ if (!$product) {
 }
 
 $retail   = Product::retailPrice($product);
+$hasPrice = Product::hasPrice($product);
+$isBulkPackage = $product['category_slug'] === 'bulk-food-packages';
 $onSale   = Product::isOnSale($product);
 $hasBulk  = Product::hasWholesale($product);
 $bulkQty  = max(1, (int) $product['wholesale_min_qty']);
-$inStock  = (int) $product['stock_qty'] > 0;
+$inStock  = !$hasPrice || (int) $product['stock_qty'] > 0;
 $minOrder = max(1, (int) $product['min_order']);
 $related  = Product::related($product, 4);
 
 $whatsapp = Setting::get('whatsapp');
 $waText   = rawurlencode('Hello KACHI, I would like to order: ' . $product['name'] . ' (' . $product['sku'] . ').');
 
+$schemaProduct = [
+    '@context'    => 'https://schema.org',
+    '@type'       => 'Product',
+    'name'        => $product['name'],
+    'description' => $product['summary'] ?: excerpt($product['description'], 300),
+    'sku'         => $product['sku'],
+    'category'    => $product['category_name'],
+    'brand'       => ['@type' => 'Brand', 'name' => 'KACHI'],
+];
+if ($hasPrice) {
+    $schemaProduct['offers'] = [
+        '@type'         => 'Offer',
+        'url'           => rtrim(APP_DOMAIN, '/') . '/products/' . $product['slug'],
+        'priceCurrency' => 'NGN',
+        'price'         => number_format($retail, 2, '.', ''),
+        'availability'  => $inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        'seller'        => ['@type' => 'Organization', 'name' => Setting::get('site_name', APP_NAME)],
+    ];
+}
+
 /** Product + breadcrumb structured data for this page. */
 $schema = json_encode([
-    [
-        '@context'    => 'https://schema.org',
-        '@type'       => 'Product',
-        'name'        => $product['name'],
-        'description' => $product['summary'] ?: excerpt($product['description'], 300),
-        'sku'         => $product['sku'],
-        'category'    => $product['category_name'],
-        'brand'       => ['@type' => 'Brand', 'name' => 'KACHI'],
-        'offers'      => [
-            '@type'         => 'Offer',
-            'url'           => rtrim(APP_DOMAIN, '/') . '/products/' . $product['slug'],
-            'priceCurrency' => 'NGN',
-            'price'         => number_format($retail, 2, '.', ''),
-            'availability'  => $inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-            'seller'        => ['@type' => 'Organization', 'name' => Setting::get('site_name', APP_NAME)],
-        ],
-    ],
+    $schemaProduct,
     [
         '@context'        => 'https://schema.org',
         '@type'           => 'BreadcrumbList',
@@ -78,8 +84,13 @@ partial('header', [
             <div class="lg:sticky lg:top-28 lg:self-start">
                 <div class="relative aspect-square overflow-hidden rounded-3xl border border-ink-200 bg-navy-50 shadow-soft">
                     <?php if (!empty($product['image'])): ?>
-                        <img src="<?= e(product_image_url($product['image'])) ?>" alt="<?= e($product['name']) ?>"
-                             class="size-full object-cover" width="800" height="800">
+                        <picture>
+                            <?php if ($webp = product_image_webp($product['image'])): ?>
+                                <source srcset="<?= e($webp) ?>" type="image/webp">
+                            <?php endif; ?>
+                            <img src="<?= e(product_image_url($product['image'])) ?>" alt="<?= e($product['name']) ?>"
+                                 class="size-full object-cover" width="800" height="800">
+                        </picture>
                     <?php else: ?>
                         <span class="absolute inset-0 bg-gradient-to-br from-navy-100 via-navy-50 to-orange-100"></span>
                         <span class="absolute inset-0 grid place-items-center">
@@ -128,14 +139,20 @@ partial('header', [
                 <div class="mt-7 rounded-2xl border border-ink-200 bg-white p-6 shadow-soft">
                     <div class="flex flex-wrap items-end justify-between gap-4">
                         <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-ink-400">Retail price</p>
-                            <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                                <span class="price font-display text-4xl font-extrabold text-navy-700"><?= money($retail) ?></span>
-                                <?php if ($onSale): ?>
-                                    <span class="text-base text-ink-400 line-through"><?= money($product['retail_price']) ?></span>
-                                <?php endif; ?>
-                            </p>
-                            <p class="mt-1 text-sm text-ink-400">per <?= e($product['unit']) ?></p>
+                            <?php if ($hasPrice): ?>
+                                <p class="text-xs font-bold uppercase tracking-wider text-ink-400">Retail price</p>
+                                <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                                    <span class="price font-display text-4xl font-extrabold text-navy-700"><?= money($retail) ?></span>
+                                    <?php if ($onSale): ?>
+                                        <span class="text-base text-ink-400 line-through"><?= money($product['retail_price']) ?></span>
+                                    <?php endif; ?>
+                                </p>
+                                <p class="mt-1 text-sm text-ink-400">per <?= e($product['unit']) ?></p>
+                            <?php else: ?>
+                                <p class="text-xs font-bold uppercase tracking-wider text-orange-600">Market-priced item</p>
+                                <p class="mt-1 font-display text-3xl font-extrabold text-navy-700">Price on request</p>
+                                <p class="mt-1 text-sm text-ink-500">Ask for today&rsquo;s price per <?= e($product['unit']) ?>.</p>
+                            <?php endif; ?>
                         </div>
 
                         <?php if ($hasBulk): ?>
@@ -162,7 +179,9 @@ partial('header', [
 
                 <!-- Stock -->
                 <div class="mt-5 flex flex-wrap gap-2">
-                    <?php if ($inStock): ?>
+                    <?php if (!$hasPrice || ($isBulkPackage && $inStock)): ?>
+                        <span class="badge badge-success badge-dot">Available to order</span>
+                    <?php elseif ($inStock): ?>
                         <span class="badge badge-success badge-dot"><?= number_format((int) $product['stock_qty']) ?> in stock</span>
                     <?php else: ?>
                         <span class="badge badge-danger badge-dot">Out of stock</span>
@@ -177,34 +196,42 @@ partial('header', [
                 </div>
 
                 <!-- Buy -->
-                <form method="post" action="<?= url('/cart/add') ?>" class="mt-7 rounded-2xl border border-ink-200 bg-ink-50 p-5">
-                    <?= csrf_field() ?>
-                    <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
+                <div class="mt-7 rounded-2xl border border-ink-200 bg-ink-50 p-5">
+                    <?php if ($hasPrice): ?>
+                        <form method="post" action="<?= url('/cart/add') ?>">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
 
-                    <div class="flex flex-wrap items-end gap-4">
-                        <div>
-                            <label class="label" for="quantity">Quantity (<?= e($product['unit']) ?>)</label>
-                            <div class="qty">
-                                <button type="button" data-qty="down" aria-label="Decrease quantity"><?= icon('minus', 'size-4') ?></button>
-                                <input type="number" id="quantity" name="quantity" value="<?= $minOrder ?>"
-                                       min="<?= $minOrder ?>" step="1" inputmode="numeric">
-                                <button type="button" data-qty="up" aria-label="Increase quantity"><?= icon('plus', 'size-4') ?></button>
+                            <div class="flex flex-wrap items-end gap-4">
+                                <div>
+                                    <label class="label" for="quantity">Quantity (<?= e($product['unit']) ?>)</label>
+                                    <div class="qty">
+                                        <button type="button" data-qty="down" aria-label="Decrease quantity"><?= icon('minus', 'size-4') ?></button>
+                                        <input type="number" id="quantity" name="quantity" value="<?= $minOrder ?>"
+                                               min="<?= $minOrder ?>" step="1" inputmode="numeric">
+                                        <button type="button" data-qty="up" aria-label="Increase quantity"><?= icon('plus', 'size-4') ?></button>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary btn-lg flex-1 gap-2" type="submit" <?= $inStock ? '' : 'disabled' ?>>
+                                    <?php if ($inStock): ?>
+                                        <?= icon('cart', 'size-5') ?>Add to cart
+                                    <?php else: ?>
+                                        Currently unavailable
+                                    <?php endif; ?>
+                                </button>
                             </div>
-                        </div>
-
-                        <button class="btn btn-primary btn-lg flex-1 gap-2" type="submit" <?= $inStock ? '' : 'disabled' ?>>
-                            <?php if ($inStock): ?>
-                                <?= icon('cart', 'size-5') ?>Add to cart
-                            <?php else: ?>
-                                Currently unavailable
-                            <?php endif; ?>
-                        </button>
-                    </div>
+                        </form>
+                    <?php else: ?>
+                        <p class="text-sm leading-relaxed text-ink-600">
+                            Market prices change frequently. Tell us the quantity you need and we&rsquo;ll confirm today&rsquo;s price and availability.
+                        </p>
+                    <?php endif; ?>
 
                     <?php if ($whatsapp): ?>
                         <a class="btn btn-ghost btn-block mt-3 gap-2"
                            href="https://wa.me/<?= e($whatsapp) ?>?text=<?= $waText ?>" rel="noopener">
-                            <?= icon('message', 'size-5 text-[#25D366]') ?>Order this on WhatsApp
+                            <?= icon('message', 'size-5 text-[#25D366]') ?><?= $hasPrice ? 'Order this on WhatsApp' : 'Request price on WhatsApp' ?>
                         </a>
                     <?php endif; ?>
 
@@ -213,7 +240,7 @@ partial('header', [
                         free above <?= money(Setting::get('free_delivery_from', (string) FREE_DELIVERY_FROM)) ?>.
                         Outside <?= e(APP_STATE) ?>, <a class="link-quiet" href="<?= url('/quote') ?>">request a quote</a>.
                     </p>
-                </form>
+                </div>
 
                 <!-- Specs -->
                 <?php
@@ -237,8 +264,17 @@ partial('header', [
 
                 <?php if ($product['description']): ?>
                     <div class="mt-8">
-                        <h2 class="text-xl">Product detail</h2>
-                        <p class="mt-3 leading-relaxed text-ink-500"><?= nl2br(e($product['description'])) ?></p>
+                        <?php if ($isBulkPackage): ?>
+                            <h2 class="text-xl">What&rsquo;s inside this package</h2>
+                            <ul class="tick-list mt-4 grid gap-x-8 text-sm sm:grid-cols-2">
+                                <?php foreach (array_filter(preg_split('/\R/', trim($product['description'])) ?: []) as $line): ?>
+                                    <li><?= e($line) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <h2 class="text-xl">Product detail</h2>
+                            <p class="mt-3 leading-relaxed text-ink-500"><?= nl2br(e($product['description'])) ?></p>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>

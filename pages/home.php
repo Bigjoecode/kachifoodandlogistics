@@ -1,6 +1,7 @@
 <?php
 $categories = Category::withCounts();
 $featured   = Product::featured(8);
+$bulkPackages = Product::paginate(['category' => 'bulk-food-packages', 'per_page' => 5])['rows'];
 $totalSkus  = (int) Db::value('SELECT COUNT(*) FROM products WHERE is_active = 1');
 $areas      = service_areas();
 $whatsapp   = Setting::get('whatsapp');
@@ -152,7 +153,7 @@ partial('header', [
                         with volume pricing that drops automatically as your quantity rises.
                     </p>
                     <ul class="tick-list mt-6 text-sm">
-                        <li>Retail and wholesale price on every product</li>
+                        <li>Fixed prices shown; fresh market prices available on request</li>
                         <li>Graded, weighed and moisture tested on intake</li>
                         <li>Scheduled replenishment for standing orders</li>
                     </ul>
@@ -236,6 +237,60 @@ partial('header', [
         </div>
     </div>
 </section>
+
+<!-- ============================ Bulk packages ============================ -->
+<?php if ($bulkPackages): ?>
+<section class="section bg-white">
+    <div class="shell">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-5">
+            <div class="max-w-2xl">
+                <p class="eyebrow"><?= icon('package', 'size-3.5') ?>Buy in bulk</p>
+                <h2 class="h-section mt-3">Ready-made food packages</h2>
+                <p class="lede mt-4">One price, one cart line and a complete household restock. Open any package to see every included item and quantity.</p>
+            </div>
+            <a class="btn btn-primary gap-2" href="<?= url('/category/bulk-food-packages') ?>">
+                Compare all packages<?= icon('arrow-right', 'size-4') ?>
+            </a>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <?php foreach ($bulkPackages as $package): ?>
+                <?php
+                $href = url('/products/' . $package['slug']);
+                $itemCount = count(array_filter(preg_split('/\R/', trim((string) $package['description'])) ?: []));
+                ?>
+                <article class="card card-hover group flex flex-col overflow-hidden" data-reveal>
+                    <a class="relative block aspect-[16/9] overflow-hidden bg-navy-50" href="<?= $href ?>" tabindex="-1" aria-hidden="true">
+                        <picture>
+                            <?php if ($webp = product_image_webp($package['image'])): ?>
+                                <source srcset="<?= e($webp) ?>" type="image/webp">
+                            <?php endif; ?>
+                            <img src="<?= e(product_image_url($package['image'])) ?>" alt=""
+                                 class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                 loading="lazy" width="600" height="338">
+                        </picture>
+                        <span class="badge badge-orange absolute left-4 top-4 shadow-soft"><?= $itemCount ?> included lines</span>
+                    </a>
+                    <div class="flex flex-1 flex-col p-6">
+                        <h3 class="text-xl"><a class="hover:text-orange-600" href="<?= $href ?>"><?= e($package['name']) ?></a></h3>
+                        <p class="mt-2 text-sm leading-relaxed text-ink-500"><?= e($package['summary']) ?></p>
+                        <p class="price mt-5 font-display text-3xl font-extrabold text-navy-700"><?= money($package['retail_price']) ?></p>
+                        <div class="mt-auto grid grid-cols-2 gap-2 pt-5">
+                            <a class="btn btn-ghost" href="<?= $href ?>">View contents</a>
+                            <form method="post" action="<?= url('/cart/add') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="product_id" value="<?= (int) $package['id'] ?>">
+                                <input type="hidden" name="quantity" value="1">
+                                <button class="btn btn-primary btn-block gap-2" type="submit"><?= icon('cart', 'size-4') ?>Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- ============================ Why us ============================ -->
 <section class="section bg-white">

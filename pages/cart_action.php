@@ -11,6 +11,11 @@ switch (current_path()) {
             back();
         }
 
+        if (!Product::hasPrice($product)) {
+            flash('info', 'Please request the current market price for ' . $product['name'] . '.');
+            redirect('/products/' . $product['slug']);
+        }
+
         $quantity = max(1, input_int('quantity', 1));
         $minOrder = max(1, (int) $product['min_order']);
         if ($quantity < $minOrder) {

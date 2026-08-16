@@ -13,7 +13,7 @@ $nav = [
     ['/products',  'Foodstuff',      '/products'],
     ['/logistics', 'Book logistics', '/logistics'],
     ['/services',  'Services',       '/services'],
-    ['/quote',     'Bulk quote',     '/quote'],
+    ['/category/bulk-food-packages', 'Bulk packages', '/category/bulk-food-packages'],
     ['/about',     'About',          '/about'],
     ['/contact',   'Contact',        '/contact'],
 ];

@@ -5,7 +5,8 @@
     "css": "tailwindcss -i assets/css/tailwind.src.css -o assets/css/tailwind.css --minify",
     "css:watch": "tailwindcss -i assets/css/tailwind.src.css -o assets/css/tailwind.css --watch",
     "images": "node tools/build-images.js",
-    "sitepics": "node tools/build-sitepics.js"
+    "sitepics": "node tools/build-sitepics.js",
+    "kachi-images": "node tools/build-kachi-catalogue.js"
   },
   "keywords": [],
   "author": "",

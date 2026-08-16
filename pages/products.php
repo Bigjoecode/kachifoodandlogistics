@@ -18,7 +18,7 @@ $result = Product::paginate([
 
 $heading   = $activeCat ? $activeCat['name'] : 'Full catalogue';
 $intro     = $activeCat['description']
-    ?? 'Everything we hold in stock, from 50kg staples to reefer-only frozen lines. Retail and wholesale prices are shown on every product.';
+    ?? 'Everything we supply, from fresh market produce and 50kg staples to reefer-only frozen lines. Fixed prices are shown, while changing market lines can be requested in one tap.';
 $totalLive = (int) Db::value('SELECT COUNT(*) FROM products WHERE is_active = 1');
 $hasFilters = input('q') || input('min') || input('max');
 
